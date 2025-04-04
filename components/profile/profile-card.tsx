@@ -10,7 +10,12 @@ export const ProfileCard = () => {
   return (
     <View className="flex-row items-center justify-between border-b border-b-border p-6">
       <View className="flex-row items-center gap-x-3">
-        <Avatar alt="user" fallback="user" className="size-14" fallbackClassName="text-2xl" />
+        <Avatar
+          alt="user"
+          fallback="user"
+          className="size-14"
+          fallbackClassName="text-3xl font-medium"
+        />
         <View>
           <Text variant="heading">Sujan Chaudhary</Text>
           <Pressable

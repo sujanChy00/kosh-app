@@ -31,14 +31,14 @@ export const LanguageSelector = () => {
         </View>
       </TouchableOpacity>
       <Sheet ref={ref} snapPoints={[220]}>
-        <BottomSheetView className="gap-y-6 p-5">
+        <BottomSheetView className="gap-y-4 p-3 pt-4">
           <Button
             onPress={() => {
               setLanguage('np');
             }}
             size="flat"
-            className="justify-between rounded-xl border-2 border-primary"
-            variant="tonal">
+            className="justify-between rounded-xl border-2 border-primary py-3"
+            variant={isNepali ? 'tonal' : 'plain'}>
             <Text>नेपाली</Text>
             <View className="size-6 items-center justify-center rounded-full border-2 border-background">
               {isNepali && (
@@ -54,8 +54,8 @@ export const LanguageSelector = () => {
               setLanguage('en');
             }}
             size="flat"
-            className="justify-between rounded-xl border-2 border-primary"
-            variant="tonal">
+            className="justify-between rounded-xl border-2 border-primary py-3"
+            variant={isEnglish ? 'tonal' : 'plain'}>
             <Text>English</Text>
             <View className="size-6 items-center justify-center rounded-full border-2 border-background">
               {isEnglish && (

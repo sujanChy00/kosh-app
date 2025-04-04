@@ -13,7 +13,7 @@ import { useColorScheme } from '~/lib/useColorScheme';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
-export const MaterialTopTabs = withLayoutContext<
+const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationOptions,
   typeof Navigator,
   TabNavigationState<ParamListBase>,
@@ -24,11 +24,7 @@ const TabLayout = () => {
   const { colors } = useColorScheme();
   const { bottom } = useSafeAreaInsets();
   return (
-    <View
-      className="flex-1"
-      style={{
-        paddingBottom: bottom,
-      }}>
+    <View className="flex-1" style={{ paddingBottom: bottom }}>
       <MaterialTopTabs
         tabBarPosition="bottom"
         screenOptions={{

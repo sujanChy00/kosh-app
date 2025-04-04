@@ -1,8 +1,10 @@
+import { AntDesign } from '@expo/vector-icons';
 import { Alert, TouchableOpacity } from 'react-native';
 
-import { LogoutIcon } from '~/components/icons/logout-icon';
+import { useColorScheme } from '~/lib/useColorScheme';
 
 export const Logout = () => {
+  const { colors } = useColorScheme();
   return (
     <TouchableOpacity
       onPress={() => {
@@ -17,7 +19,7 @@ export const Logout = () => {
           },
         ]);
       }}>
-      <LogoutIcon className="text-destructive" />
+      <AntDesign name="logout" size={24} color={colors.muted_foreground} />
     </TouchableOpacity>
   );
 };

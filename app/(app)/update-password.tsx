@@ -29,13 +29,14 @@ const UpdatePassword = () => {
     resolver: zodResolver(schema),
   });
   return (
-    <View className="flex-1 justify-between p-4">
-      <View>
-        <Text className="text-center" variant="largeTitle">
-          Update your password
-        </Text>
-      </View>
-      <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'} keyboardVerticalOffset={200}>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={90}
+      className="p-4"
+      style={{
+        flex: 1,
+      }}
+      behavior={isIos ? 'padding' : 'height'}>
+      <View className="flex-1 gap-y-3">
         <FormProvider {...form}>
           <PasswordInput
             control={form.control}
@@ -56,11 +57,12 @@ const UpdatePassword = () => {
             className="rounded-full"
           />
         </FormProvider>
-      </KeyboardAvoidingView>
+      </View>
+
       <Button variant="tonal">
         <Text>Update</Text>
       </Button>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

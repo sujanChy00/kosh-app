@@ -14,7 +14,7 @@ type LanguageProviderProps = {
 
 export function LanguageProvider({ children, defaultLanguage }: LanguageProviderProps) {
   const currentLanguage = storage.getString(LANGUAGE_KEY) as LanguageKey;
-  const [lang, setLang] = useState<LanguageKey>(currentLanguage ?? (defaultLanguage || 'en'));
+  const [lang, setLang] = useState<LanguageKey>(defaultLanguage ?? (currentLanguage || 'en'));
 
   useEffect(() => {
     if (defaultLanguage) {
