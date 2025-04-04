@@ -3,12 +3,16 @@ import { useColorScheme as useNativewindColorScheme } from 'nativewind';
 import * as React from 'react';
 import { Platform } from 'react-native';
 
-import { COLORS } from '~/theme/colors';
+import { THEME_KEY } from './constants';
+import { storage } from './storage';
+
+import { COLORS, THEME } from '~/theme/colors';
 
 function useColorScheme() {
   const { colorScheme, setColorScheme: setNativeWindColorScheme } = useNativewindColorScheme();
 
-  async function setColorScheme(colorScheme: 'light' | 'dark') {
+  async function setColorScheme(colorScheme: THEME) {
+    storage.set(THEME_KEY, colorScheme);
     setNativeWindColorScheme(colorScheme);
     if (Platform.OS !== 'android') return;
     try {
@@ -31,22 +35,20 @@ function useColorScheme() {
   };
 }
 
-/**
- * Set the Android navigation bar color based on the color scheme.
- */
 function useInitialAndroidBarSync() {
   const { colorScheme } = useColorScheme();
+
   React.useEffect(() => {
     if (Platform.OS !== 'android') return;
     setNavigationBar(colorScheme).catch((error) => {
       console.error('useColorScheme.tsx", "useInitialColorScheme', error);
     });
-  }, []);
+  }, [colorScheme]);
 }
 
 export { useColorScheme, useInitialAndroidBarSync };
 
-function setNavigationBar(colorScheme: 'light' | 'dark') {
+function setNavigationBar(colorScheme: THEME) {
   return Promise.all([
     NavigationBar.setButtonStyleAsync(colorScheme === 'dark' ? 'light' : 'dark'),
     NavigationBar.setPositionAsync('absolute'),

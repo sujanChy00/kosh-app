@@ -10,12 +10,13 @@ const IOS_SYSTEM_COLORS = {
     grey3: 'rgb(199, 199, 204)',
     grey2: 'rgb(175, 176, 180)',
     grey: 'rgb(142, 142, 147)',
-    background: 'rgb(242, 242, 247)',
+    background: 'rgb(247, 247, 247)',
     foreground: 'rgb(0, 0, 0)',
     root: 'rgb(255, 255, 255)',
     card: 'rgb(255, 255, 255)',
     destructive: 'rgb(255, 56, 43)',
     primary: 'rgb(0, 123, 254)',
+    blue: 'rgb(45, 175, 231)',
   },
   dark: {
     grey6: 'rgb(21, 21, 24)',
@@ -30,11 +31,12 @@ const IOS_SYSTEM_COLORS = {
     card: 'rgb(28, 28, 30)',
     destructive: 'rgb(254, 67, 54)',
     primary: 'rgb(3, 133, 255)',
+    blue: 'rgb(176, 201, 255)',
   },
 } as const;
 
 const ANDROID_COLORS = {
-  white: 'rgb(255, 255, 255)',
+  white: 'rgb(247, 247, 247)',
   black: 'rgb(0, 0, 0)',
   light: {
     grey6: 'rgb(249, 249, 255)',
@@ -43,12 +45,13 @@ const ANDROID_COLORS = {
     grey3: 'rgb(113, 119, 134)',
     grey2: 'rgb(65, 71, 84)',
     grey: 'rgb(24, 28, 35)',
-    background: 'rgb(249, 249, 255)',
+    background: 'rgb(247, 247, 247)',
     foreground: 'rgb(0, 0, 0)',
     root: 'rgb(255, 255, 255)',
     card: 'rgb(255, 255, 255)',
     destructive: 'rgb(186, 26, 26)',
     primary: 'rgb(0, 112, 233)',
+    blue: 'rgb(176, 201, 255)',
   },
   dark: {
     grey6: 'rgb(16, 19, 27)',
@@ -63,9 +66,12 @@ const ANDROID_COLORS = {
     card: 'rgb(16, 19, 27)',
     destructive: 'rgb(147, 0, 10)',
     primary: 'rgb(3, 133, 255)',
+    blue: 'rgb(176, 201, 255)',
   },
 } as const;
 
 const COLORS = Platform.OS === 'ios' ? IOS_SYSTEM_COLORS : ANDROID_COLORS;
+
+export type THEME = 'light' | 'dark';
 
 export { COLORS };
