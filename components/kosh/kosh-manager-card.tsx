@@ -6,6 +6,8 @@ import { Card } from '../ui/card';
 import { Separator } from '../ui/separator';
 import { Text } from '../ui/text';
 
+import { cn } from '~/lib/cn';
+
 type Props = {
   phoneNo: number;
   name: string;
@@ -13,6 +15,7 @@ type Props = {
   managerPowers?: string;
   id: number;
   removeMember: (id: number) => void;
+  className?: string;
 };
 
 export const KoshManagerCard = ({
@@ -22,9 +25,10 @@ export const KoshManagerCard = ({
   managerPowers,
   id,
   removeMember,
+  className,
 }: Props) => {
   return (
-    <Card className="relative overflow-hidden rounded-2xl">
+    <Card className={cn('relative overflow-hidden rounded-2xl border-0', className)}>
       <View className="flex-row items-start justify-between p-3">
         <Text className="flex-1 text-lg font-medium capitalize">{name}</Text>
 
@@ -53,7 +57,7 @@ export const KoshManagerCard = ({
           </Badge>
         </View>
       </View>
-      <Separator />
+      <Separator style={{ height: 1 }} />
       <Button variant="plain" size="flat" onPress={() => removeMember(id)}>
         <Text className="text-destructive">Remove</Text>
       </Button>
