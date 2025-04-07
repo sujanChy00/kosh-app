@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { z } from 'zod';
 
 import { Button } from '~/components/ui/button';
@@ -33,8 +34,8 @@ const ResetPassword = () => {
     resolver: zodResolver(schema),
   });
   return (
-    <View className="flex-1 p-4">
-      <View className="flex-1 gap-y-3">
+    <KeyboardAwareScrollView contentContainerClassName="gap-y-10 p-4 pt-20" className="flex-1 ">
+      <View className="gap-y-3">
         <FormProvider {...form}>
           <TextInput
             control={form.control}
@@ -85,7 +86,7 @@ const ResetPassword = () => {
           <Text>Reset</Text>
         </Button>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 

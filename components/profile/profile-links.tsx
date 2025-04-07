@@ -6,6 +6,7 @@ import { ChevronRight } from '../icons/chevron-right';
 import { Handshake } from '../icons/handshake-icon';
 import { Lock } from '../icons/lock-icon';
 import { ShieldCheck } from '../icons/shield-check';
+import { UserRoundPenIcon } from '../icons/user-round-pen';
 import { Wrench } from '../icons/wrench-icon';
 import { Separator } from '../ui/separator';
 import { Text } from '../ui/text';
@@ -15,6 +16,11 @@ const links = [
     label: 'Update Password',
     href: '/update-password',
     icon: <Lock size={24} className="text-muted-foreground" />,
+  },
+  {
+    label: 'Update Profile',
+    href: '/profile/1/edit',
+    icon: <UserRoundPenIcon size={24} className="text-muted-foreground" />,
   },
   {
     label: 'Privacy Policy',
