@@ -1,7 +1,7 @@
 import { AntDesign } from '@expo/vector-icons';
 import { Alert, TouchableOpacity } from 'react-native';
 
-import { useColorScheme } from '~/lib/useColorScheme';
+import { useColorScheme } from '~/hooks/use-color-scheme';
 
 export const Logout = () => {
   const { colors } = useColorScheme();

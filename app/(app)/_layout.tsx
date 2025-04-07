@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useColorScheme } from '~/lib/useColorScheme';
+import { useColorScheme } from '~/hooks/use-color-scheme';
 
 const AppLayout = () => {
   const { colors } = useColorScheme();
@@ -14,6 +14,10 @@ const AppLayout = () => {
             headerTitle: 'Update Password',
           }}
         />
+        <Stack.Screen name="kosh/[id]/edit" options={{ title: 'Edit Kosh' }} />
+        <Stack.Screen name="kosh/[id]/add-manager" options={{ title: 'Add Managers' }} />
+        <Stack.Screen name="kosh/[id]/add-member" options={{ title: 'Add Members' }} />
+        <Stack.Screen name="kosh/add" options={{ title: 'Add Kosh' }} />
       </Stack>
     </SafeAreaView>
   );

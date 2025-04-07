@@ -1,8 +1,8 @@
 import { Picker as RNPicker } from '@react-native-picker/picker';
 import { View } from 'react-native';
 
+import { useColorScheme } from '~/hooks/use-color-scheme';
 import { cn } from '~/lib/cn';
-import { useColorScheme } from '~/lib/useColorScheme';
 
 export function Picker<T>({
   mode = 'dropdown',
@@ -23,7 +23,7 @@ export function Picker<T>({
         mode={mode}
         style={
           style ?? {
-            backgroundColor: colors.root,
+            backgroundColor: colors.background,
             borderRadius: 8,
           }
         }

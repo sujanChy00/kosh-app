@@ -2,7 +2,7 @@ import { useNavigation } from 'expo-router';
 import * as React from 'react';
 import { SearchBarProps } from 'react-native-screens';
 
-import { useColorScheme } from './useColorScheme';
+import { useColorScheme } from './use-color-scheme';
 
 import { COLORS } from '~/theme/colors';
 

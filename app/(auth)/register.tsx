@@ -2,7 +2,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { z } from 'zod';
 
 import { Button } from '~/components/ui/button';
@@ -10,8 +11,7 @@ import { PasswordInput } from '~/components/ui/form-inputs/password-input';
 import { TextInput } from '~/components/ui/form-inputs/text-input';
 import { Text } from '~/components/ui/text';
 import { TextDivider } from '~/components/ui/text-divider';
-import { isIos } from '~/lib/constants';
-import { useColorScheme } from '~/lib/useColorScheme';
+import { useColorScheme } from '~/hooks/use-color-scheme';
 
 const schema = z
   .object({
@@ -40,63 +40,61 @@ const Register = () => {
     resolver: zodResolver(schema),
   });
   return (
-    <KeyboardAvoidingView
-      behavior={isIos ? 'padding' : 'height'}
+    <KeyboardAwareScrollView
+      keyboardShouldPersistTaps="handled"
       style={{
         flex: 1,
       }}>
-      <ScrollView className="flex-1 p-6">
-        <FormProvider {...form}>
-          <View className="gap-y-3">
+      <ScrollView className="flex-1 p-4 pt-0" contentContainerClassName="-translate-y-16 ">
+        <View className="gap-y-3 pt-20">
+          <FormProvider {...form}>
             <TextInput
               control={form.control}
               name="email"
-              label="Your email (optional)"
-              inputMode="email"
-              placeholder="email"
-              keyboardType="email-address"
+              placeholder="email or phone no."
+              label="Email or Phone No."
               className="rounded-full"
+              inputMode="email"
+              keyboardType="email-address"
             />
+
             <TextInput
               control={form.control}
               name="userName"
-              label="Your name"
-              placeholder="name"
+              placeholder="username"
+              label="Username"
               className="rounded-full"
             />
             <TextInput
               control={form.control}
               name="phoneNo"
-              label="Your phone no."
               placeholder="phone no."
+              label="Phone No."
               className="rounded-full"
-              keyboardType="phone-pad"
               inputMode="numeric"
+              keyboardType="numeric"
             />
             <PasswordInput
               control={form.control}
               name="password"
-              label="Password"
               placeholder="***********"
+              label="Password"
               className="rounded-full"
             />
             <PasswordInput
               control={form.control}
               name="confirmPassword"
-              label="Confirm Password"
               placeholder="***********"
+              label="Confirm Password"
               className="rounded-full"
             />
-          </View>
-          <View className="gap-y-3 pt-6">
-            <Button
-              variant="secondary"
-              className="rounded-full"
-              onPress={form.handleSubmit((data) => console.log(data))}>
+          </FormProvider>
+          <View className="gap-y-3 pt-3">
+            <Button variant="secondary" className="rounded-full">
               <Text>Sign up</Text>
             </Button>
           </View>
-        </FormProvider>
+        </View>
         <View className="flex-row items-center justify-center pt-2">
           <Text className="text-sm text-muted-foreground">Don't have an account ? </Text>
           <Link
@@ -125,7 +123,7 @@ const Register = () => {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 

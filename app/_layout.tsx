@@ -10,13 +10,14 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import '../global.css';
 
 import { ThemeToggle } from '~/components/theme-toggler';
+import { useColorScheme, useInitialAndroidBarSync } from '~/hooks/use-color-scheme';
 import { cn } from '~/lib/cn';
 import { THEME_KEY } from '~/lib/constants';
 import { storage } from '~/lib/storage';
-import { useColorScheme, useInitialAndroidBarSync } from '~/lib/useColorScheme';
 import { LanguageProvider } from '~/providers/language';
 import { NAV_THEME } from '~/theme';
 import { THEME } from '~/theme/colors';
@@ -74,32 +75,34 @@ export default function RootLayout() {
 
       <GestureHandlerRootView style={{ flex: 1 }}>
         <BottomSheetModalProvider>
-          <ActionSheetProvider>
-            <NavThemeProvider value={NAV_THEME[colorScheme]}>
-              <LanguageProvider>
-                <Stack screenOptions={SCREEN_OPTIONS}>
-                  <Stack.Screen
-                    name="(tabs)"
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="(auth)"
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="(app)"
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-                </Stack>
-              </LanguageProvider>
-            </NavThemeProvider>
-          </ActionSheetProvider>
+          <KeyboardProvider navigationBarTranslucent>
+            <ActionSheetProvider>
+              <NavThemeProvider value={NAV_THEME[colorScheme]}>
+                <LanguageProvider>
+                  <Stack screenOptions={SCREEN_OPTIONS}>
+                    <Stack.Screen
+                      name="(tabs)"
+                      options={{
+                        headerShown: false,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="(auth)"
+                      options={{
+                        headerShown: false,
+                      }}
+                    />
+                    <Stack.Screen
+                      name="(app)"
+                      options={{
+                        headerShown: false,
+                      }}
+                    />
+                  </Stack>
+                </LanguageProvider>
+              </NavThemeProvider>
+            </ActionSheetProvider>
+          </KeyboardProvider>
         </BottomSheetModalProvider>
       </GestureHandlerRootView>
 

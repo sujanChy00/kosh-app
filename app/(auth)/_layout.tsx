@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useColorScheme } from '~/lib/useColorScheme';
+import { useColorScheme } from '~/hooks/use-color-scheme';
 
 const AuthLayout = () => {
   const { colors } = useColorScheme();
@@ -20,23 +20,18 @@ const AuthLayout = () => {
           }}
         />
         <Stack.Screen
+          name="register"
+          options={{
+            headerTitle: 'Sign up',
+          }}
+        />
+        <Stack.Screen
           name="forgot-password"
           options={{
             presentation: 'modal',
             title: 'Forgot Password',
             animation: 'fade_from_bottom',
-          }}
-        />
-        <Stack.Screen
-          name="reset-password"
-          options={{
-            title: 'Reset Password',
-          }}
-        />
-        <Stack.Screen
-          name="register"
-          options={{
-            title: 'Sign up',
+            headerShown: false,
           }}
         />
       </Stack>

@@ -3,8 +3,8 @@ import { useColorScheme as useNativewindColorScheme } from 'nativewind';
 import * as React from 'react';
 import { Platform } from 'react-native';
 
-import { THEME_KEY } from './constants';
-import { storage } from './storage';
+import { THEME_KEY } from '../lib/constants';
+import { storage } from '../lib/storage';
 
 import { COLORS, THEME } from '~/theme/colors';
 

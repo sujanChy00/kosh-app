@@ -6,8 +6,8 @@ import { Text } from 'react-native-reanimated/lib/typescript/Animated';
 
 import { X } from '../icons/close-icon';
 
+import { useColorScheme } from '~/hooks/use-color-scheme';
 import { cn } from '~/lib/cn';
-import { useColorScheme } from '~/lib/useColorScheme';
 
 const alertVariants = cva('relative w-full rounded-lg border px-4 py-3', {
   variants: {

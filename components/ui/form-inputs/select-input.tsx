@@ -4,7 +4,7 @@ import { FormDescription, FormField, FormItem, FormLabel } from '../form';
 import { Input } from '../input';
 import { Picker, PickerItem } from '../picker';
 
-import { useColorScheme } from '~/lib/useColorScheme';
+import { useColorScheme } from '~/hooks/use-color-scheme';
 
 export type InputProps = React.ComponentProps<typeof Input>;
 
@@ -52,7 +52,7 @@ export const SelectInput = <T extends FieldValues>({
                   value={option.value}
                   color={colors.foreground}
                   style={{
-                    backgroundColor: colors.root,
+                    backgroundColor: colors.background,
                   }}
                 />
               ))}

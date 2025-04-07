@@ -1,14 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { z } from 'zod';
 
 import { Button } from '~/components/ui/button';
 import { PasswordInput } from '~/components/ui/form-inputs/password-input';
 import { TextInput } from '~/components/ui/form-inputs/text-input';
 import { Text } from '~/components/ui/text';
-import { isIos } from '~/lib/constants';
 
 const schema = z
   .object({
@@ -34,49 +33,41 @@ const ResetPassword = () => {
     resolver: zodResolver(schema),
   });
   return (
-    <KeyboardAvoidingView
-      className="p-4"
-      keyboardVerticalOffset={90}
-      behavior={isIos ? 'padding' : 'height'}
-      style={{
-        flex: 1,
-      }}>
-      <ScrollView className="flex-1">
-        <View className="flex-1 justify-center gap-y-3">
-          <FormProvider {...form}>
-            <TextInput
-              control={form.control}
-              name="email"
-              placeholder="so***@gmail.com"
-              className="rounded-full"
-              inputMode="email"
-              keyboardType="email-address"
-              label="Your email"
-            />
-            <TextInput
-              control={form.control}
-              name="token"
-              placeholder="token"
-              className="rounded-full"
-              label="Token"
-            />
-            <PasswordInput
-              control={form.control}
-              name="password"
-              placeholder="***********"
-              label="Password"
-              className="rounded-full"
-            />
-            <PasswordInput
-              control={form.control}
-              name="confirmPassword"
-              placeholder="***********"
-              label="Confirm Password"
-              className="rounded-full"
-            />
-          </FormProvider>
-        </View>
-      </ScrollView>
+    <View className="flex-1 p-4">
+      <View className="flex-1 gap-y-3">
+        <FormProvider {...form}>
+          <TextInput
+            control={form.control}
+            name="email"
+            placeholder="so***@gmail.com"
+            className="rounded-full"
+            inputMode="email"
+            keyboardType="email-address"
+            label="Your email"
+          />
+          <TextInput
+            control={form.control}
+            name="token"
+            placeholder="token"
+            className="rounded-full"
+            label="Token"
+          />
+          <PasswordInput
+            control={form.control}
+            name="password"
+            placeholder="***********"
+            label="Password"
+            className="rounded-full"
+          />
+          <PasswordInput
+            control={form.control}
+            name="confirmPassword"
+            placeholder="***********"
+            label="Confirm Password"
+            className="rounded-full"
+          />
+        </FormProvider>
+      </View>
       <View className="gap-y-3">
         <Link
           href={{
@@ -94,7 +85,7 @@ const ResetPassword = () => {
           <Text>Reset</Text>
         </Button>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 

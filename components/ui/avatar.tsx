@@ -71,7 +71,9 @@ const Avatar = ({
         <AvatarImage source={{ uri: src }} />
       ) : (
         <AvatarFallback>
-          <Text className={fallbackClassName}>{getAvatarName(fallback)}</Text>
+          <Text className={cn('text-muted-foreground', fallbackClassName)}>
+            {getAvatarName(fallback)}
+          </Text>
         </AvatarFallback>
       )}
     </AvatarWrapper>

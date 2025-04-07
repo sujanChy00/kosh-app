@@ -4,8 +4,8 @@ import * as React from 'react';
 import { Platform, Pressable, PressableProps, View, ViewStyle } from 'react-native';
 
 import { TextClassContext } from '~/components/ui/text';
+import { useColorScheme } from '~/hooks/use-color-scheme';
 import { cn } from '~/lib/cn';
-import { useColorScheme } from '~/lib/useColorScheme';
 import { COLORS } from '~/theme/colors';
 
 const buttonVariants = cva('flex-row items-center justify-center gap-2', {

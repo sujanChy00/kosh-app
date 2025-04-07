@@ -5,8 +5,8 @@ import Animated, { LayoutAnimationConfig, ZoomInRotate } from 'react-native-rean
 import { Text } from './ui/text';
 import { Toggle } from './ui/toggle';
 
+import { useColorScheme } from '~/hooks/use-color-scheme';
 import { cn } from '~/lib/cn';
-import { useColorScheme } from '~/lib/useColorScheme';
 
 export function ThemeToggle({ className, iconColor }: { className?: string; iconColor?: string }) {
   const { colorScheme, toggleColorScheme, isDarkColorScheme } = useColorScheme();

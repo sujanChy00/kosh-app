@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { Button } from '~/components/ui/button';
 import { TextInput } from '~/components/ui/form-inputs/text-input';
 import { Text } from '~/components/ui/text';
+import { isIos } from '~/lib/constants';
 
 const schema = z.object({
   email: z.string().email(),
@@ -22,6 +23,7 @@ const ForgotPassword = () => {
   });
   return (
     <KeyboardAvoidingView
+      behavior={isIos ? 'padding' : 'height'}
       className="p-4"
       style={{
         flex: 1,
@@ -36,7 +38,7 @@ const ForgotPassword = () => {
             inputMode="email"
             keyboardType="email-address"
           />
-          <Button variant="tonal">
+          <Button variant="tonal" onPress={form.handleSubmit((data) => console.log(data))}>
             <Text>Send</Text>
           </Button>
         </FormProvider>
@@ -45,7 +47,7 @@ const ForgotPassword = () => {
         <Text className="text-sm text-muted-foreground">Already have a code ? </Text>
         <Link
           href={{
-            pathname: '/reset-password',
+            pathname: '/forgot-password/reset-password',
             params: {
               email: form.watch('email'),
             },

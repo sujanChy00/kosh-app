@@ -60,6 +60,7 @@ export const DeleteAccountDialog = () => {
           </AlertDialogHeader>
           <View className="p-6 pt-0">
             <Input
+              autoFocus
               value={password}
               onChangeText={setPassword}
               placeholder="enter your password"

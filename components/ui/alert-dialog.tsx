@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Modal, Pressable, Text, TextProps, View, ViewProps } from 'react-native';
+import Animated, { StretchInY } from 'react-native-reanimated';
 
 import { Button, ButtonProps } from './button';
 
@@ -155,7 +156,8 @@ export const AlertDialogContent = React.forwardRef<View, ViewProps>((props, ref)
       onDismiss={onDismiss}
       statusBarTranslucent>
       <View className="bg-background/80 relative flex-1 items-center justify-center">
-        <View
+        <Animated.View
+          entering={StretchInY.duration(200)}
           ref={ref}
           className={cn(
             'shadow-foreground/10 relative z-40 min-w-[80%] max-w-[90%] rounded-3xl bg-card shadow-sm sm:min-w-[30%]',

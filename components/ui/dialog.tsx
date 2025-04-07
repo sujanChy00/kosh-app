@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Modal, Pressable, Text, TextProps, View, ViewProps } from 'react-native';
+import Animated, { StretchInY } from 'react-native-reanimated';
 
 import { Button, ButtonProps } from './button';
 
@@ -149,7 +150,8 @@ export const DialogContent = React.forwardRef<View, ViewProps>((props, ref) => {
           className="bg-background/80 absolute inset-0"
           onPress={() => onOpenChange(false)}
         />
-        <View
+        <Animated.View
+          entering={StretchInY.duration(200)}
           ref={ref}
           className={cn(
             'shadow-foreground/10 relative z-40 min-w-[80%] rounded-3xl bg-card shadow-sm sm:min-w-[30%]',
