@@ -1,4 +1,4 @@
-import { Entypo, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import type {
   MaterialTopTabNavigationEventMap,
   MaterialTopTabNavigationOptions,
@@ -6,7 +6,6 @@ import type {
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import type { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { withLayoutContext } from 'expo-router';
-import { ReceiptIndianRupee } from 'lucide-react-native';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -44,7 +43,7 @@ const TabLayout = () => {
         <MaterialTopTabs.Screen
           name="index"
           options={{
-            tabBarIcon: ({ color }) => <Entypo size={28} name="home" color={color} />,
+            tabBarIcon: ({ color }) => <Ionicons size={28} name="home-outline" color={color} />,
             tabBarLabelStyle: {
               display: 'none',
             },
@@ -54,7 +53,7 @@ const TabLayout = () => {
           name="chat"
           options={{
             tabBarIcon: ({ color }) => (
-              <Ionicons size={28} name="chatbubble-ellipses" color={color} />
+              <Ionicons size={28} name="chatbubble-outline" color={color} />
             ),
             tabBarBounces: false,
             tabBarLabelStyle: {
@@ -65,7 +64,7 @@ const TabLayout = () => {
         <MaterialTopTabs.Screen
           name="transactions"
           options={{
-            tabBarIcon: ({ color }) => <ReceiptIndianRupee size={28} color={color} />,
+            tabBarIcon: ({ color }) => <Ionicons name="receipt-outline" size={28} color={color} />,
             tabBarLabelStyle: {
               display: 'none',
             },
@@ -74,7 +73,7 @@ const TabLayout = () => {
         <MaterialTopTabs.Screen
           name="profile"
           options={{
-            tabBarIcon: ({ color }) => <FontAwesome size={28} name="user" color={color} />,
+            tabBarIcon: ({ color }) => <Ionicons size={28} name="person-outline" color={color} />,
             tabBarLabelStyle: {
               display: 'none',
             },
