@@ -17,8 +17,14 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "This app accesses your photos",
-          "cameraPermission": "Allow ${PRODUCT_NAME} to access your camera."
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos to upload profile pictures and share images",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera to take photos"
+        }
+      ],
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "Allow $(PRODUCT_NAME) to access your contacts to help you connect with friends"
         }
       ]
     ],
@@ -36,14 +42,32 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sujan-chy00.kosh",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSContactsUsageDescription": "Allow this app to access your contacts to help you connect with friends",
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera to take photos",
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos to upload profile pictures and share images",
+        "UIBackgroundModes": ["fetch", "remote-notification"],
+        "LSApplicationQueriesSchemes": ["mailto", "tel"]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.sujan_chy00.kosh"
+      "permissions": [
+        "android.permission.READ_CONTACTS",
+        "android.permission.WRITE_CONTACTS",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET"
+      ],
+      "package": "com.sujan_chy00.kosh",
+      "versionCode": 1
     },
     "extra": {
       "router": {
