@@ -1,17 +1,27 @@
 import { formatDistanceToNow } from 'date-fns';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { memo } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
 import { Avatar } from '../ui/avatar';
 import { Text } from '../ui/text';
+import { ChatcardActions } from './chat-card-actions';
 
 import { truncateString } from '~/lib/truncate-string';
 
 const ChatCardComponent = () => {
+  const router = useRouter();
   return (
-    <Link asChild href="/chat/1">
-      <TouchableOpacity>
+    <ReanimatedSwipeable
+      friction={2}
+      enableTrackpadTwoFingerGesture
+      rightThreshold={40}
+      containerStyle={{
+        overflow: 'hidden',
+      }}
+      renderRightActions={ChatcardActions}>
+      <TouchableOpacity onPress={() => router.push('/chat/1')}>
         <View className="flex-row items-center justify-between">
           <View className="flex-row items-center gap-x-3">
             <Avatar
@@ -37,7 +47,7 @@ const ChatCardComponent = () => {
           </View>
         </View>
       </TouchableOpacity>
-    </Link>
+    </ReanimatedSwipeable>
   );
 };
 
