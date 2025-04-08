@@ -2,7 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { KeyboardAwareScrollView, KeyboardGestureArea } from 'react-native-keyboard-controller';
 import { z } from 'zod';
 
@@ -19,7 +19,7 @@ const schema = z
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
     userName: z.string().min(1),
-    phoneNo: z.coerce.number().min(10),
+    phoneNo: z.string().min(10),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -28,14 +28,16 @@ const schema = z
 
 const Register = () => {
   const { colors } = useColorScheme();
-  const params = useLocalSearchParams<{ email?: string }>();
+  const params = useLocalSearchParams<{ userId?: string }>();
+  const email = params?.userId?.includes('@') ? params?.userId : undefined;
+  const phone = params?.userId?.includes('@') ? undefined : params?.userId;
   const form = useForm<z.infer<typeof schema>>({
     defaultValues: {
-      email: params?.email || '',
       password: '',
       confirmPassword: '',
       userName: '',
-      phoneNo: 0,
+      phoneNo: phone,
+      email,
     },
     resolver: zodResolver(schema),
   });
@@ -43,87 +45,85 @@ const Register = () => {
     <KeyboardGestureArea interpolator="linear" style={{ flex: 1 }}>
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps="handled"
+        contentContainerClassName="p-4"
         style={{
           flex: 1,
         }}>
-        <ScrollView className="flex-1 p-4 pt-0" contentContainerClassName="-translate-y-16 ">
-          <View className="gap-y-3 pt-20">
-            <FormProvider {...form}>
-              <TextInput
-                control={form.control}
-                name="email"
-                placeholder="email or phone no."
-                label="Email or Phone No."
-                className="rounded-full"
-                inputMode="email"
-                keyboardType="email-address"
-              />
-
-              <TextInput
-                control={form.control}
-                name="userName"
-                placeholder="username"
-                label="Username"
-                className="rounded-full"
-              />
-              <TextInput
-                control={form.control}
-                name="phoneNo"
-                placeholder="phone no."
-                label="Phone No."
-                className="rounded-full"
-                inputMode="numeric"
-                keyboardType="numeric"
-              />
-              <PasswordInput
-                control={form.control}
-                name="password"
-                placeholder="***********"
-                label="Password"
-                className="rounded-full"
-              />
-              <PasswordInput
-                control={form.control}
-                name="confirmPassword"
-                placeholder="***********"
-                label="Confirm Password"
-                className="rounded-full"
-              />
-            </FormProvider>
-            <View className="gap-y-3 pt-3">
-              <Button variant="secondary" className="rounded-full">
-                <Text>Sign up</Text>
-              </Button>
-            </View>
+        <View className="gap-y-5">
+          <FormProvider {...form}>
+            <TextInput
+              control={form.control}
+              name="userName"
+              placeholder="your name"
+              label="Name"
+              className="rounded-full"
+            />
+            <TextInput
+              control={form.control}
+              name="phoneNo"
+              placeholder="98********"
+              label="Phone number"
+              className="rounded-full"
+              inputMode="tel"
+              keyboardType="phone-pad"
+            />
+            <TextInput
+              control={form.control}
+              name="email"
+              placeholder="so***@gmail.com"
+              label="Email"
+              className="rounded-full"
+              inputMode="email"
+              keyboardType="email-address"
+            />
+            <PasswordInput
+              control={form.control}
+              name="password"
+              placeholder="***********"
+              label="Password"
+              className="rounded-full"
+            />
+            <PasswordInput
+              control={form.control}
+              name="confirmPassword"
+              placeholder="***********"
+              label="Confirm Password"
+              className="rounded-full"
+            />
+          </FormProvider>
+          <View className="gap-y-3 pt-3">
+            <Button variant="secondary" className="rounded-full">
+              <Text>Sign up</Text>
+            </Button>
           </View>
-          <View className="flex-row items-center justify-center pt-2">
-            <Text className="text-sm text-muted-foreground">Don't have an account ? </Text>
-            <Link
-              href={{
-                pathname: '/login',
-                params: {
-                  email: form.watch('email'),
-                },
-              }}>
-              <Text className="text-sm font-semibold text-primary underline">Sign in</Text>
-            </Link>
+        </View>
+        <View className="flex-row items-center justify-center pt-2">
+          <Text className="text-sm text-muted-foreground">Don't have an account ? </Text>
+          <Link
+            href={{
+              pathname: '/login',
+              params: {
+                phone: form.watch('phoneNo'),
+              },
+            }}>
+            <Text className="text-sm font-semibold text-primary underline">Sign in</Text>
+          </Link>
+        </View>
+        <View className="gap-y-6 pt-4">
+          <TextDivider>
+            <Text className="font-medium text-muted-foreground">or</Text>
+          </TextDivider>
+          <View className="gap-y-3">
+            <Button className="rounded-full" variant="outline">
+              <FontAwesome name="google" size={20} color={colors.foreground} />
+              <Text>Sign up with google</Text>
+            </Button>
+            <Button variant="outline" className="gap-3 rounded-full ">
+              <FontAwesome name="facebook" size={20} color="#1877F2" />
+              <Text className="text-[#1877F2]">Sign up with facebook</Text>
+            </Button>
           </View>
-          <View className="gap-y-6 pt-4">
-            <TextDivider>
-              <Text className="font-medium text-muted-foreground">or</Text>
-            </TextDivider>
-            <View className="gap-y-3">
-              <Button className="rounded-full" variant="outline">
-                <FontAwesome name="google" size={20} color={colors.foreground} />
-                <Text>Sign up with google</Text>
-              </Button>
-              <Button variant="outline" className="gap-3 rounded-full ">
-                <FontAwesome name="facebook" size={20} color="#1877F2" />
-                <Text className="text-[#1877F2]">Sign up with facebook</Text>
-              </Button>
-            </View>
-          </View>
-        </ScrollView>
+        </View>
       </KeyboardAwareScrollView>
     </KeyboardGestureArea>
   );

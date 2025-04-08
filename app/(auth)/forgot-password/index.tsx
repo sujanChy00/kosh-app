@@ -11,14 +11,14 @@ import { Text } from '~/components/ui/text';
 import { isIos } from '~/lib/constants';
 
 const schema = z.object({
-  email: z.string().email(),
+  userId: z.string().email(),
 });
 
 const ForgotPassword = () => {
-  const params = useLocalSearchParams<{ email?: string }>();
+  const params = useLocalSearchParams<{ userId?: string }>();
   const form = useForm({
     defaultValues: {
-      email: params?.email || '',
+      userId: params?.userId || '',
     },
     resolver: zodResolver(schema),
   });
@@ -33,11 +33,9 @@ const ForgotPassword = () => {
         <FormProvider {...form}>
           <TextInput
             control={form.control}
-            name="email"
-            placeholder="so***@gmail.com"
+            name="userId"
+            placeholder="email or phone number"
             className="rounded-full"
-            inputMode="email"
-            keyboardType="email-address"
           />
           <Button variant="tonal" onPress={form.handleSubmit((data) => console.log(data))}>
             <Text>Send</Text>
@@ -50,7 +48,7 @@ const ForgotPassword = () => {
           href={{
             pathname: '/forgot-password/reset-password',
             params: {
-              email: form.watch('email'),
+              userId: form.watch('userId'),
             },
           }}>
           <Text className="text-sm font-semibold text-primary underline">Reset</Text>

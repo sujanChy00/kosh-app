@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Stack } from 'expo-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { KeyboardAwareScrollView, KeyboardGestureArea } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { z } from 'zod';
 
-import { Button } from '~/components/ui/button';
 import { DateInput } from '~/components/ui/form-inputs/date-input';
 import { TextAreaInput } from '~/components/ui/form-inputs/text-area-input';
 import { TextInput } from '~/components/ui/form-inputs/text-input';
@@ -37,32 +37,43 @@ const KoshAdd = () => {
     },
     resolver: zodResolver(schema),
   });
+  const onSubmit = form.handleSubmit((data) => console.log(data));
   return (
     <KeyboardGestureArea interpolator="linear" style={{ flex: 1, paddingBottom: bottom }}>
+      <Stack.Screen
+        options={{
+          title: 'Add Kosh',
+          headerRight: () => (
+            <Pressable onPress={onSubmit}>
+              <Text className="font-medium">save</Text>
+            </Pressable>
+          ),
+        }}
+      />
       <KeyboardAwareScrollView
         className="flex-1"
         contentContainerClassName="p-4"
         keyboardShouldPersistTaps="handled">
-        <View className="gap-y-3 pb-6">
+        <View className="gap-y-5">
           <FormProvider {...form}>
             <TextInput
               control={form.control}
               name="name"
               label="Name"
-              placeholder="kosh name"
+              placeholder="my kosh"
               className="rounded-full"
             />
             <TextAreaInput
               control={form.control}
               name="description"
               label="Description (optional)"
-              placeholder="kosh description"
+              placeholder="we are a group of friends who want to save money"
             />
             <TextInput
               control={form.control}
               name="fineAmount"
               label="Fine Amount"
-              placeholder="fine amount"
+              placeholder="Rs. 100"
               className="rounded-full"
               inputMode="numeric"
               keyboardType="numeric"
@@ -71,7 +82,7 @@ const KoshAdd = () => {
               control={form.control}
               name="minimumAmount"
               label="Minimum Amount"
-              placeholder="minimum amount"
+              placeholder="Rs. 2000"
               className="rounded-full"
               inputMode="numeric"
               keyboardType="numeric"
@@ -80,7 +91,7 @@ const KoshAdd = () => {
               control={form.control}
               name="fineDuration"
               label="Fine Duration (in days)"
-              placeholder="fine duration"
+              placeholder="example: 3 days"
               className="rounded-full"
               inputMode="numeric"
               keyboardType="numeric"
@@ -89,7 +100,7 @@ const KoshAdd = () => {
               control={form.control}
               name="interestPercentage"
               label="Interest Percentage (%)"
-              placeholder="interest percentage"
+              placeholder="example: 2%"
               className="rounded-full"
               inputMode="numeric"
               keyboardType="numeric"
@@ -110,9 +121,6 @@ const KoshAdd = () => {
             />
           </FormProvider>
         </View>
-        <Button variant="tonal" onPress={form.handleSubmit((data) => console.log(data))}>
-          <Text>Add</Text>
-        </Button>
       </KeyboardAwareScrollView>
     </KeyboardGestureArea>
   );

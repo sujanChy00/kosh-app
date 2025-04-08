@@ -9,7 +9,7 @@ import { Text } from '../ui/text';
 import { cn } from '~/lib/cn';
 
 type Props = {
-  phoneNo: number;
+  phoneNo: string;
   name: string;
   email?: string;
   isManager?: boolean;

@@ -16,9 +16,8 @@ import { TextDivider } from '~/components/ui/text-divider';
 import { useColorScheme } from '~/hooks/use-color-scheme';
 
 const schema = z.object({
-  email: z.string().email(),
+  userId: z.string().min(1),
   password: z.string().min(6),
-  referralCode: z.string().optional(),
 });
 
 const Login = () => {
@@ -28,8 +27,7 @@ const Login = () => {
   const form = useForm({
     defaultValues: {
       password: '',
-      email: '',
-      referralCode: '',
+      userId: '',
     },
     resolver: zodResolver(schema),
   });
@@ -66,22 +64,13 @@ const Login = () => {
           </Pressable>
         </View>
 
-        <View className="gap-y-3 pt-20">
+        <View className="gap-y-5 pt-20">
           <FormProvider {...form}>
             <TextInput
               control={form.control}
-              name="email"
-              placeholder="email or phone no."
-              label="Email or Phone No."
-              className="rounded-full"
-              inputMode="email"
-              keyboardType="email-address"
-            />
-            <TextInput
-              control={form.control}
-              name="referralCode"
-              placeholder="referral code"
-              label="Referral Code"
+              name="userId"
+              placeholder="email or phone number"
+              label="User ID"
               className="rounded-full"
             />
             <View className="gap-y-0.5">
@@ -96,7 +85,7 @@ const Login = () => {
                 href={{
                   pathname: '/forgot-password',
                   params: {
-                    email: form.watch('email'),
+                    userId: form.watch('userId'),
                   },
                 }}
                 className="text-right text-muted-foreground">
@@ -116,7 +105,7 @@ const Login = () => {
             href={{
               pathname: '/register',
               params: {
-                email: form.watch('email'),
+                userId: form.watch('userId'),
               },
             }}>
             <Text className="text-sm font-semibold text-primary underline">Sign up</Text>
