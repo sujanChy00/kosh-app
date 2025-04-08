@@ -61,7 +61,7 @@ const Avatar = ({
 }: {
   className?: string;
   alt: string;
-  src?: string;
+  src?: string | null;
   fallback?: string;
   fallbackClassName?: string;
 }) => {
@@ -71,7 +71,7 @@ const Avatar = ({
         <AvatarImage source={{ uri: src }} />
       ) : (
         <AvatarFallback>
-          <Text className={cn('text-muted-foreground', fallbackClassName)}>
+          <Text className={cn('text-muted-foreground dark:text-muted', fallbackClassName)}>
             {getAvatarName(fallback)}
           </Text>
         </AvatarFallback>

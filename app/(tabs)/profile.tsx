@@ -12,6 +12,7 @@ import { ThemeToggle } from '~/components/theme-toggler';
 import { Button } from '~/components/ui/button';
 import { Card } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
+import { Spacer } from '~/components/ui/spacer';
 import { Text } from '~/components/ui/text';
 
 const ProfileScreen = () => {
@@ -50,6 +51,7 @@ const ProfileScreen = () => {
           <DeleteAccountDialog />
         </Card>
       </View>
+      <Spacer height={70} />
     </ScrollView>
   );
 };

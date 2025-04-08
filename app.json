@@ -10,7 +10,18 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["expo-router", "expo-build-properties", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-build-properties",
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "This app accesses your photos",
+          "cameraPermission": "Allow ${PRODUCT_NAME} to access your camera."
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -18,7 +18,9 @@ import { MicIcon } from '~/components/icons/mic-icon';
 import { PhoneIcon } from '~/components/icons/phone-icon';
 import { PlusIcon } from '~/components/icons/plus-icon';
 import { SendHorizonal } from '~/components/icons/send-horizontal';
+import { useCamera } from '~/hooks/use-camera';
 import { useColorScheme } from '~/hooks/use-color-scheme';
+import { useImagePicker } from '~/hooks/use-image-picker';
 
 const OPTIONS_HEIGHT = 100;
 
@@ -26,6 +28,9 @@ export const ChatInput = ({ onSend }: { onSend: (message: string) => void }) => 
   const { colors } = useColorScheme();
   const [message, setMessage] = useState('');
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
+  const { pickImage } = useImagePicker();
+
+  const { takePhoto } = useCamera();
 
   const progress = useSharedValue(0);
 
@@ -91,6 +96,7 @@ export const ChatInput = ({ onSend }: { onSend: (message: string) => void }) => 
               value={message}
               multiline
               onChangeText={setMessage}
+              autoFocus
               className="flex-1 py-3.5 text-foreground placeholder:text-muted-foreground"
             />
             <TouchableOpacity
@@ -116,12 +122,14 @@ export const ChatInput = ({ onSend }: { onSend: (message: string) => void }) => 
             left: 0,
             right: 0,
             bottom: 0,
+            borderTopColor: colors.muted,
+            borderTopWidth: 1,
           },
           optionsStyle,
         ]}>
         <View className="flex-row items-center justify-around py-4">
           <View className="items-center gap-y-1">
-            <Button size="icon" variant="secondary">
+            <Button size="icon" variant="secondary" onPress={takePhoto}>
               <CameraIcon className="text-muted-foreground" />
             </Button>
             <Text className="text-muted-foreground" variant="caption1">
@@ -129,7 +137,7 @@ export const ChatInput = ({ onSend }: { onSend: (message: string) => void }) => 
             </Text>
           </View>
           <View className="items-center gap-y-1">
-            <Button size="icon" variant="secondary">
+            <Button size="icon" variant="secondary" onPress={pickImage}>
               <GalleryIcon className="text-muted-foreground" />
             </Button>
             <Text className="text-muted-foreground" variant="caption1">
@@ -165,16 +173,3 @@ export const ChatInput = ({ onSend }: { onSend: (message: string) => void }) => 
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    gap: 8,
-  },
-  plusButton: {
-    padding: 4,
-  },
-});

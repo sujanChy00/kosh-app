@@ -1,5 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'expo-router';
+import { memo } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
 import { Avatar } from '../ui/avatar';
@@ -7,7 +8,7 @@ import { Text } from '../ui/text';
 
 import { truncateString } from '~/lib/truncate-string';
 
-export const ChatCard = () => {
+const ChatCardComponent = () => {
   return (
     <Link asChild href="/chat/1">
       <TouchableOpacity>
@@ -39,3 +40,5 @@ export const ChatCard = () => {
     </Link>
   );
 };
+
+export const ChatCard = memo(ChatCardComponent);

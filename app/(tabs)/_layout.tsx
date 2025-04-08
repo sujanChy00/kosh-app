@@ -56,6 +56,7 @@ const TabLayout = () => {
             tabBarIcon: ({ color }) => (
               <Ionicons size={28} name="chatbubble-ellipses" color={color} />
             ),
+            tabBarBounces: false,
             tabBarLabelStyle: {
               display: 'none',
             },

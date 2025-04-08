@@ -2,11 +2,17 @@ import { LegendList, LegendListRef } from '@legendapp/list';
 import { formatDistanceToNow } from 'date-fns';
 import { Stack } from 'expo-router';
 import { useRef, useState } from 'react';
-import { View } from 'react-native';
-import { KeyboardAvoidingView, KeyboardGestureArea } from 'react-native-keyboard-controller';
+import { TouchableOpacity, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  KeyboardGestureArea,
+  useKeyboardHandler,
+} from 'react-native-keyboard-controller';
+import Animated, { ZoomIn, ZoomOut, runOnJS } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ChatInput } from '~/components/chat/chat-input';
+import { ChevronDown } from '~/components/icons/chevron-down';
 import { Avatar } from '~/components/ui/avatar';
 import { Card } from '~/components/ui/card';
 import { Text } from '~/components/ui/text';
@@ -14,8 +20,22 @@ import { cn } from '~/lib/cn';
 import { isIos } from '~/lib/constants';
 
 const ChatDetailScreen = () => {
-  const { bottom } = useSafeAreaInsets();
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const { bottom, top } = useSafeAreaInsets();
   const ref = useRef<LegendListRef>(null);
+
+  useKeyboardHandler({
+    onMove: (e) => {
+      'worklet';
+      runOnJS(setKeyboardVisible)(e.height > 0);
+    },
+    onEnd: (e) => {
+      'worklet';
+      runOnJS(setKeyboardVisible)(e.height > 0);
+    },
+  });
+
   const data = Array.from({ length: 50 }).map((_, index) => ({
     id: index.toString(),
     text: 'Hello, my container is blurring contents underneath knkjhkjhjhghfhgf!',
@@ -26,25 +46,48 @@ const ChatDetailScreen = () => {
 
   return (
     <KeyboardGestureArea style={{ flex: 1, paddingBottom: bottom }} interpolator="linear">
-      <KeyboardAvoidingView
-        behavior={isIos ? 'padding' : 'height'}
-        style={{
-          flex: 1,
-        }}>
+      <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'} style={{ flex: 1 }}>
         <Stack.Screen
           options={{
             headerShown: false,
             headerTransparent: true,
           }}
         />
-        <View className="flex-1">
+        {showScrollButton && (
+          <Animated.View
+            entering={ZoomIn}
+            exiting={ZoomOut}
+            style={{
+              position: 'absolute',
+              right: 16,
+              bottom: 80,
+              zIndex: 20,
+            }}>
+            <TouchableOpacity
+              onPress={() => ref.current?.scrollToEnd()}
+              className="size-12 items-center justify-center rounded-2xl bg-secondary shadow">
+              <ChevronDown className="text-secondary-foreground" size={30} />
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+        <View style={{ flex: 1 }}>
           <LegendList
-            data={chat}
-            className="flex-1"
-            onStartReached={() => {
-              console.log('start reached');
+            onScroll={(e) => {
+              const { contentOffset, contentSize, layoutMeasurement, contentInset } = e.nativeEvent;
+              const paddingBottom = contentInset?.bottom ?? 0;
+              const threshold = 20;
+
+              const isAtBottom =
+                contentOffset.y + layoutMeasurement.height + paddingBottom >=
+                contentSize.height - threshold;
+
+              setShowScrollButton(!isAtBottom);
             }}
+            data={chat}
+            waitForInitialLayout
+            showsVerticalScrollIndicator={false}
             ref={ref}
+            style={{ flex: 1 }}
             initialScrollIndex={data.length - 1}
             estimatedItemSize={41}
             keyExtractor={(item) => item.id}
@@ -52,6 +95,7 @@ const ChatDetailScreen = () => {
             alignItemsAtEnd
             contentContainerStyle={{
               padding: 12,
+              paddingTop: top,
             }}
             recycleItems
             maintainScrollAtEnd
