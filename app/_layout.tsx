@@ -75,7 +75,7 @@ export default function RootLayout() {
 
       <GestureHandlerRootView style={{ flex: 1 }}>
         <BottomSheetModalProvider>
-          <KeyboardProvider navigationBarTranslucent>
+          <KeyboardProvider navigationBarTranslucent statusBarTranslucent>
             <ActionSheetProvider>
               <NavThemeProvider value={NAV_THEME[colorScheme]}>
                 <LanguageProvider>

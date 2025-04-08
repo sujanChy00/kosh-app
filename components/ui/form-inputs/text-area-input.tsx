@@ -34,6 +34,7 @@ export const TextAreaInput = <T extends FieldValues>({
               </FormLabel>
             )}
             <Textarea
+              autoComplete="off"
               {...props}
               isError={!!fieldState.error}
               id={name}

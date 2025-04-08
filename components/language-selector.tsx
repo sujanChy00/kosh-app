@@ -8,6 +8,7 @@ import { Button } from './ui/button';
 import { Sheet, useSheetRef } from './ui/sheet';
 import { Text } from './ui/text';
 
+import { cn } from '~/lib/cn';
 import { useLanguage } from '~/providers/language/hook';
 
 export const LanguageSelector = () => {
@@ -37,7 +38,10 @@ export const LanguageSelector = () => {
               setLanguage('np');
             }}
             size="flat"
-            className="justify-between rounded-xl border-2 border-primary py-3"
+            className={cn(
+              'justify-between rounded-xl border-2 py-3',
+              isNepali ? 'border-primary' : 'border-border'
+            )}
             variant={isNepali ? 'tonal' : 'plain'}>
             <Text>नेपाली</Text>
             <View className="size-6 items-center justify-center rounded-full border-2 border-background">
@@ -54,7 +58,10 @@ export const LanguageSelector = () => {
               setLanguage('en');
             }}
             size="flat"
-            className="justify-between rounded-xl border-2 border-primary py-3"
+            className={cn(
+              'justify-between rounded-xl border-2 py-3',
+              isEnglish ? 'border-primary' : 'border-border'
+            )}
             variant={isEnglish ? 'tonal' : 'plain'}>
             <Text>English</Text>
             <View className="size-6 items-center justify-center rounded-full border-2 border-background">

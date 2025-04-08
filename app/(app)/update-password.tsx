@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { z } from 'zod';
 
 import { Button } from '~/components/ui/button';
@@ -19,6 +20,7 @@ const schema = z
   });
 
 const UpdatePassword = () => {
+  const { bottom } = useSafeAreaInsets();
   const form = useForm({
     defaultValues: {
       oldPassword: '',
@@ -28,7 +30,7 @@ const UpdatePassword = () => {
     resolver: zodResolver(schema),
   });
   return (
-    <View className="flex-1 p-4">
+    <SafeAreaView className="flex-1 p-4">
       <View className="flex-1 gap-y-3">
         <FormProvider {...form}>
           <PasswordInput
@@ -55,7 +57,7 @@ const UpdatePassword = () => {
       <Button variant="tonal">
         <Text>Update</Text>
       </Button>
-    </View>
+    </SafeAreaView>
   );
 };
 

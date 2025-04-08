@@ -1,14 +1,16 @@
 import { Link, Stack } from 'expo-router';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { PlusIcon } from '~/components/icons/plus-icon';
 
 const KoshScreen = () => {
+  const { bottom } = useSafeAreaInsets();
   return (
-    <View className="flex-1">
+    <View className="flex-1" style={{ paddingBottom: bottom }}>
       <Stack.Screen options={{ title: 'Kosh' }} />
       <Link asChild href="/kosh/add">
-        <TouchableOpacity className="absolute bottom-6 right-4 z-20 size-14 items-center justify-center rounded-2xl bg-secondary shadow">
+        <TouchableOpacity className="absolute bottom-10 right-4 z-20 size-14 items-center justify-center rounded-2xl bg-secondary shadow">
           <PlusIcon className="text-secondary-foreground" />
         </TouchableOpacity>
       </Link>
