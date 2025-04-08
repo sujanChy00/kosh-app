@@ -7,6 +7,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import type { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { withLayoutContext } from 'expo-router';
 import { View } from 'react-native';
+import Animated, { StretchInX, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '~/hooks/use-color-scheme';
@@ -43,7 +44,25 @@ const TabLayout = () => {
         <MaterialTopTabs.Screen
           name="index"
           options={{
-            tabBarIcon: ({ color }) => <Ionicons size={28} name="home-outline" color={color} />,
+            tabBarIcon: ({ color, focused }) => (
+              <View className="relative items-center">
+                <Ionicons
+                  name="home-outline"
+                  size={28}
+                  color={color}
+                  style={{
+                    position: 'relative',
+                    zIndex: 30,
+                  }}
+                />
+                {focused && (
+                  <Animated.View
+                    entering={StretchInX.easing(withTiming).delay(100)}
+                    className="absolute -top-1 -z-10 h-9 w-14 rounded-2xl bg-secondary"
+                  />
+                )}
+              </View>
+            ),
             tabBarLabelStyle: {
               display: 'none',
             },
@@ -52,8 +71,24 @@ const TabLayout = () => {
         <MaterialTopTabs.Screen
           name="chat"
           options={{
-            tabBarIcon: ({ color }) => (
-              <Ionicons size={28} name="chatbubble-outline" color={color} />
+            tabBarIcon: ({ color, focused }) => (
+              <View className="relative items-center">
+                <Ionicons
+                  name="chatbubble-outline"
+                  size={28}
+                  color={color}
+                  style={{
+                    position: 'relative',
+                    zIndex: 30,
+                  }}
+                />
+                {focused && (
+                  <Animated.View
+                    entering={StretchInX.easing(withTiming).delay(100)}
+                    className="absolute -top-1 -z-10 h-9 w-14 rounded-2xl bg-secondary"
+                  />
+                )}
+              </View>
             ),
             tabBarBounces: false,
             tabBarLabelStyle: {
@@ -64,7 +99,25 @@ const TabLayout = () => {
         <MaterialTopTabs.Screen
           name="transactions"
           options={{
-            tabBarIcon: ({ color }) => <Ionicons name="receipt-outline" size={28} color={color} />,
+            tabBarIcon: ({ color, focused }) => (
+              <View className="relative items-center">
+                <Ionicons
+                  name="receipt-outline"
+                  size={28}
+                  color={color}
+                  style={{
+                    position: 'relative',
+                    zIndex: 30,
+                  }}
+                />
+                {focused && (
+                  <Animated.View
+                    entering={StretchInX.easing(withTiming).delay(100)}
+                    className="absolute -top-1 -z-10 h-9 w-14 rounded-2xl bg-secondary"
+                  />
+                )}
+              </View>
+            ),
             tabBarLabelStyle: {
               display: 'none',
             },
@@ -73,7 +126,25 @@ const TabLayout = () => {
         <MaterialTopTabs.Screen
           name="profile"
           options={{
-            tabBarIcon: ({ color }) => <Ionicons size={28} name="person-outline" color={color} />,
+            tabBarIcon: ({ color, focused }) => (
+              <View className="relative items-center">
+                <Ionicons
+                  name="person-outline"
+                  size={28}
+                  color={color}
+                  style={{
+                    position: 'relative',
+                    zIndex: 30,
+                  }}
+                />
+                {focused && (
+                  <Animated.View
+                    entering={StretchInX.easing(withTiming).delay(100)}
+                    className="absolute -top-1 -z-10 h-9 w-14 rounded-2xl bg-secondary"
+                  />
+                )}
+              </View>
+            ),
             tabBarLabelStyle: {
               display: 'none',
             },
