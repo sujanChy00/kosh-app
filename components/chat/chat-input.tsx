@@ -2,48 +2,27 @@ import { useState } from 'react';
 import { TextInput, TouchableOpacity, View } from 'react-native';
 import Animated, {
   interpolate,
+  SharedValue,
   useAnimatedStyle,
-  useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
 
-import { Button } from '../ui/button';
-import { Text } from '../ui/text';
-
-import { CameraIcon } from '~/components/icons/camera-icon';
-import { FolderOpen } from '~/components/icons/folder-open';
-import { GalleryIcon } from '~/components/icons/gallery-icon';
-import { InfoIcon } from '~/components/icons/info-icon';
 import { MicIcon } from '~/components/icons/mic-icon';
-import { PhoneIcon } from '~/components/icons/phone-icon';
 import { PlusIcon } from '~/components/icons/plus-icon';
 import { SendHorizonal } from '~/components/icons/send-horizontal';
-import { useCamera } from '~/hooks/use-camera';
 import { useColorScheme } from '~/hooks/use-color-scheme';
-import { useImagePicker } from '~/hooks/use-image-picker';
 
 const OPTIONS_HEIGHT = 100;
 
-export const ChatInput = ({ onSend }: { onSend: (message: string) => void }) => {
+type Props = {
+  onSend: (message: string) => void;
+  progress: SharedValue<number>;
+};
+
+export const ChatInput = ({ onSend, progress }: Props) => {
   const { colors } = useColorScheme();
   const [message, setMessage] = useState('');
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
-  const { pickImage } = useImagePicker();
-
-  const { takePhoto } = useCamera();
-
-  const progress = useSharedValue(0);
-
-  const optionsStyle = useAnimatedStyle(() => {
-    const height = interpolate(progress.value, [0, 1], [0, OPTIONS_HEIGHT]);
-
-    // const opacity = interpolate(progress.value, [0, 0.5, 1], [0, 0, 1]);
-
-    return {
-      height,
-      overflow: 'hidden',
-    };
-  });
 
   const inputStyle = useAnimatedStyle(() => {
     const translateY = interpolate(progress.value, [0, 1], [0, -OPTIONS_HEIGHT]);
@@ -74,102 +53,42 @@ export const ChatInput = ({ onSend }: { onSend: (message: string) => void }) => 
   };
 
   return (
-    <View>
-      <Animated.View
-        style={[
-          {
-            zIndex: 1,
-            backgroundColor: colors.background,
-          },
-          inputStyle,
-        ]}>
-        <View className="flex-row items-center gap-x-2 p-3">
-          <TouchableOpacity onPress={toggleOptions}>
-            <Animated.View style={plusIconStyle}>
-              <PlusIcon className="text-muted-foreground" />
-            </Animated.View>
+    <Animated.View
+      style={[
+        {
+          zIndex: 1,
+          backgroundColor: colors.background,
+        },
+        inputStyle,
+      ]}>
+      <View className="flex-row items-center gap-x-2 p-3">
+        <TouchableOpacity onPress={toggleOptions}>
+          <Animated.View style={plusIconStyle}>
+            <PlusIcon className="text-muted-foreground" />
+          </Animated.View>
+        </TouchableOpacity>
+
+        <View className="flex-1 flex-row items-center rounded-3xl bg-card px-3">
+          <TextInput
+            placeholder="Type a message"
+            value={message}
+            multiline
+            onChangeText={setMessage}
+            className="flex-1 py-3.5 text-foreground placeholder:text-muted-foreground"
+          />
+          <TouchableOpacity
+            onPress={() => {
+              onSend(message);
+              setMessage('');
+            }}>
+            {message.length > 0 ? (
+              <SendHorizonal className="text-foreground" />
+            ) : (
+              <MicIcon className="text-foreground" />
+            )}
           </TouchableOpacity>
-
-          <View className="flex-1 flex-row items-center rounded-3xl bg-card px-3">
-            <TextInput
-              placeholder="Type a message"
-              value={message}
-              multiline
-              onChangeText={setMessage}
-              autoFocus
-              className="flex-1 py-3.5 text-foreground placeholder:text-muted-foreground"
-            />
-            <TouchableOpacity
-              onPress={() => {
-                onSend(message);
-                setMessage('');
-              }}>
-              {message.length > 0 ? (
-                <SendHorizonal className="text-foreground" />
-              ) : (
-                <MicIcon className="text-foreground" />
-              )}
-            </TouchableOpacity>
-          </View>
         </View>
-      </Animated.View>
-
-      <Animated.View
-        style={[
-          {
-            position: 'absolute',
-            backgroundColor: colors.card,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            borderTopColor: colors.muted,
-            borderTopWidth: 1,
-          },
-          optionsStyle,
-        ]}>
-        <View className="flex-row items-center justify-around py-4">
-          <View className="items-center gap-y-1">
-            <Button size="icon" variant="secondary" onPress={takePhoto}>
-              <CameraIcon className="text-muted-foreground" />
-            </Button>
-            <Text className="text-muted-foreground" variant="caption1">
-              camera
-            </Text>
-          </View>
-          <View className="items-center gap-y-1">
-            <Button size="icon" variant="secondary" onPress={pickImage}>
-              <GalleryIcon className="text-muted-foreground" />
-            </Button>
-            <Text className="text-muted-foreground" variant="caption1">
-              gallery
-            </Text>
-          </View>
-          <View className="items-center gap-y-1">
-            <Button size="icon" variant="secondary">
-              <FolderOpen className="text-muted-foreground" />
-            </Button>
-            <Text className="text-muted-foreground" variant="caption1">
-              files
-            </Text>
-          </View>
-          <View className="items-center gap-y-1">
-            <Button size="icon" variant="secondary">
-              <PhoneIcon className="text-muted-foreground" />
-            </Button>
-            <Text className="text-muted-foreground" variant="caption1">
-              call
-            </Text>
-          </View>
-          <View className="items-center gap-y-1">
-            <Button size="icon" variant="secondary">
-              <InfoIcon className="text-muted-foreground" />
-            </Button>
-            <Text className="text-muted-foreground" variant="caption1">
-              info
-            </Text>
-          </View>
-        </View>
-      </Animated.View>
-    </View>
+      </View>
+    </Animated.View>
   );
 };

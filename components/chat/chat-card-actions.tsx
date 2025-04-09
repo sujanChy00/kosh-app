@@ -1,20 +1,37 @@
-import { View } from 'react-native';
-import Animated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import { Animated } from 'react-native';
 
+import { SwipeableAction } from '../ui/swipeable/swipeable-action';
+import { SwipeableActionRenderer } from '../ui/swipeable/swipeable-action-renderer';
+
+import { CheckCheck } from '~/components/icons/check-check';
 import { Trash2 } from '~/components/icons/trash-icon2';
 
-export function ChatcardActions(prog: SharedValue<number>, drag: SharedValue<number>) {
-  const styleAnimation = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: drag.value + 56 }],
-    };
-  });
+interface Props {
+  prog: Animated.AnimatedInterpolation<number>;
+  onDelete: () => void;
+}
 
+export function ChatcardActions({ prog, onDelete }: Props) {
   return (
-    <Animated.View style={styleAnimation}>
-      <View className="size-14 items-center justify-center bg-destructive">
-        <Trash2 className="text-destructive-foreground" />
-      </View>
-    </Animated.View>
+    <SwipeableActionRenderer width={128}>
+      <SwipeableAction
+        onPress={() => {
+          console.log('pressed');
+        }}
+        className="bg-secondary"
+        width={128}
+        progress={prog}>
+        <CheckCheck className="text-white dark:text-secondary-foreground" size={28} />
+      </SwipeableAction>
+      <SwipeableAction
+        onPress={() => {
+          onDelete();
+        }}
+        className="bg-destructive"
+        width={64}
+        progress={prog}>
+        <Trash2 className="text-destructive-foreground" size={28} />
+      </SwipeableAction>
+    </SwipeableActionRenderer>
   );
 }

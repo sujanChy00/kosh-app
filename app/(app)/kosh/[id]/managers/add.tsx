@@ -22,7 +22,7 @@ const schema = z.object({
 
 type Manager = z.infer<typeof schema>;
 
-const AddManagerScreen = () => {
+const Page = () => {
   const [managers, setManagers] = useState<(Manager & { id: number })[]>([]);
   const form = useForm<Manager>({
     defaultValues: {
@@ -119,4 +119,4 @@ const AddManagerScreen = () => {
   );
 };
 
-export default AddManagerScreen;
+export default Page;

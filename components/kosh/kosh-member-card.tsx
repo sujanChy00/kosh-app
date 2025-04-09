@@ -49,7 +49,7 @@ export const KoshMemberCard = ({
         </View>
       </View>
       {isManager && (
-        <View className="flex-row items-center justify-between bg-muted p-3">
+        <View className="flex-row items-center justify-between bg-muted p-3 dark:bg-muted-foreground">
           <Badge>
             <Text>manager</Text>
           </Badge>

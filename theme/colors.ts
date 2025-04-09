@@ -17,8 +17,8 @@ const IOS_SYSTEM_COLORS = {
     destructive: 'rgb(255, 56, 43)',
     primary: 'rgb(0, 123, 254)',
     blue: 'rgb(45, 175, 231)',
-    muted_foreground: 'rgb(142 142 147)',
-    muted: 'rgb(175 176 180)',
+    muted_foreground: 'rgb(82 66 73)',
+    muted: 'rgb(219 214 216)',
   },
   dark: {
     grey6: 'rgb(21, 21, 24)',
@@ -34,8 +34,8 @@ const IOS_SYSTEM_COLORS = {
     destructive: 'rgb(254, 67, 54)',
     primary: 'rgb(3, 133, 255)',
     blue: 'rgb(176, 201, 255)',
-    muted_foreground: 'rgb(142 142 147)',
-    muted: 'rgb(70 70 73)',
+    muted_foreground: 'rgb(189 173 180)',
+    muted: 'rgb(41 36 38)',
   },
 } as const;
 

@@ -36,15 +36,15 @@ export const KoshOptions = () => {
         <DropdownMenu.Item onSelect={() => router.push('/kosh/3/edit')} key="edit">
           <DropdownMenu.ItemTitle>Edit</DropdownMenu.ItemTitle>
         </DropdownMenu.Item>
-        <DropdownMenu.Item onSelect={() => router.push('/kosh/3/add-member')} key="add_member">
-          <DropdownMenu.ItemTitle>Add Members</DropdownMenu.ItemTitle>
+        <DropdownMenu.Item onSelect={() => router.push('/kosh/3/members')} key="members">
+          <DropdownMenu.ItemTitle>Members</DropdownMenu.ItemTitle>
         </DropdownMenu.Item>
         <DropdownMenu.Item
           onSelect={() => {
-            router.push('/kosh/3/add-manager');
+            router.push('/kosh/3/managers');
           }}
-          key="add_manager">
-          <DropdownMenu.ItemTitle>Add Managers</DropdownMenu.ItemTitle>
+          key="managers">
+          <DropdownMenu.ItemTitle>Managers</DropdownMenu.ItemTitle>
         </DropdownMenu.Item>
         <DropdownMenu.Item key="delete" destructive onSelect={onPress}>
           <DropdownMenu.ItemTitle>Delete</DropdownMenu.ItemTitle>

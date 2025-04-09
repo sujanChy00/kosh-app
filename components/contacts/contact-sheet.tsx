@@ -6,6 +6,7 @@ import { Sheet, useSheetRef } from '../ui/sheet';
 import { ContactSheetContent } from './contact-sheet-content';
 
 import { SquareUserRoundIcon } from '~/components/icons/square-user-round';
+import { Keyboard } from 'react-native';
 
 type Props = ButtonProps & {
   onSelect: ({ name, number }: { name: string; number: string }) => void;
@@ -48,10 +49,20 @@ export const ContactsSheet = ({ onSelect, children, ...props }: Props) => {
   }, []);
   return (
     <>
-      <Button variant="muted" size="icon" {...props} onPress={() => ref.current?.present()}>
-        {children || <SquareUserRoundIcon className="text-muted-foreground" />}
+      <Button
+        variant="muted"
+        size="icon"
+        {...props}
+        onPress={() => {
+          if (Keyboard.isVisible()) {
+            Keyboard.dismiss();
+          }
+
+          ref.current?.present();
+        }}>
+        {children || <SquareUserRoundIcon className="text-muted-foreground dark:text-muted" />}
       </Button>
-      <Sheet ref={ref} snapPoints={[220, 500, 800]}>
+      <Sheet ref={ref} snapPoints={[500, 800]}>
         <ContactSheetContent
           contacts={contacts}
           onSelect={onSelect}
