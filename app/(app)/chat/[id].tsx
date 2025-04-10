@@ -1,158 +1,77 @@
-import { LegendList, LegendListRef } from '@legendapp/list';
-import { formatDistanceToNow } from 'date-fns';
+import { LegendListRef } from '@legendapp/list';
 import { Stack } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import {
-  KeyboardAvoidingView,
-  KeyboardGestureArea,
-  useKeyboardHandler,
-} from 'react-native-keyboard-controller';
-import Animated, { ZoomIn, ZoomOut, runOnJS } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { ZoomIn, ZoomOut, useAnimatedStyle } from 'react-native-reanimated';
 
-import { ChatInput } from '~/components/chat/chat-input';
+import { ChatAction } from '~/components/chat/chat-action';
+import { ChatArea } from '~/components/chat/chat-area';
 import { ChevronDown } from '~/components/icons/chevron-down';
-import { Avatar } from '~/components/ui/avatar';
-import { Card } from '~/components/ui/card';
-import { Text } from '~/components/ui/text';
-import { cn } from '~/lib/cn';
-import { isIos } from '~/lib/constants';
+import { useKeyboardFakeView } from '~/hooks/use-keyboard-fake-view';
 
 const ChatDetailScreen = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-  const { bottom, top } = useSafeAreaInsets();
   const ref = useRef<LegendListRef>(null);
+  const { fakeView, height } = useKeyboardFakeView();
 
-  useKeyboardHandler({
-    onMove: (e) => {
-      'worklet';
-      runOnJS(setKeyboardVisible)(e.height > 0);
-    },
-    onEnd: (e) => {
-      'worklet';
-      runOnJS(setKeyboardVisible)(e.height > 0);
-    },
-  });
-
-  const data = Array.from({ length: 50 }).map((_, index) => ({
-    id: index.toString(),
-    text: 'Hello, my container is blurring contents underneath knkjhkjhjhghfhgf!',
-    isUser: index % 2 === 0,
-  }));
+  const data = useMemo(
+    () =>
+      Array.from({ length: 50 }).map((_, index) => ({
+        id: index.toString(),
+        text: 'Hello, my container is blurring contents underneath knkjhkjhjhghfhgf!',
+        isUser: index % 2 === 0,
+      })),
+    []
+  );
 
   const [chat, setChats] = useState(data);
 
+  const handleSendMessage = useCallback((message: string) => {
+    setChats((prev) => [
+      ...prev,
+      {
+        id: prev.length.toString(),
+        text: message,
+        isUser: true,
+      },
+    ]);
+    ref.current?.scrollToEnd();
+  }, []);
+
+  const handleScrollToEnd = useCallback(() => {
+    ref.current?.scrollToEnd();
+  }, []);
+
+  const containerStyle = useMemo(() => ({ flex: 1 }), []);
+
+  const scrollButtonStyle = useAnimatedStyle(() => ({
+    position: 'absolute',
+    right: 16,
+    bottom: height.value > 0 ? height.value + 90 : 90,
+    zIndex: 20,
+  }));
+
   return (
-    <KeyboardGestureArea style={{ flex: 1, paddingBottom: bottom }} interpolator="linear">
-      <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'} style={{ flex: 1 }}>
-        <Stack.Screen
-          options={{
-            headerShown: false,
-            headerTransparent: true,
-          }}
-        />
-        {showScrollButton && (
-          <Animated.View
-            entering={ZoomIn}
-            exiting={ZoomOut}
-            style={{
-              position: 'absolute',
-              right: 16,
-              bottom: 80,
-              zIndex: 20,
-            }}>
-            <TouchableOpacity
-              onPress={() => ref.current?.scrollToEnd()}
-              className="size-12 items-center justify-center rounded-2xl bg-secondary shadow">
-              <ChevronDown className="text-secondary-foreground" size={30} />
-            </TouchableOpacity>
-          </Animated.View>
-        )}
-        <View style={{ flex: 1 }}>
-          <LegendList
-            onScroll={(e) => {
-              const { contentOffset, contentSize, layoutMeasurement, contentInset } = e.nativeEvent;
-              const paddingBottom = contentInset?.bottom ?? 0;
-              const threshold = 20;
-
-              const isAtBottom =
-                contentOffset.y + layoutMeasurement.height + paddingBottom >=
-                contentSize.height - threshold;
-
-              setShowScrollButton(!isAtBottom);
-            }}
-            data={chat}
-            waitForInitialLayout
-            showsVerticalScrollIndicator={false}
-            ref={ref}
-            style={{ flex: 1 }}
-            initialScrollIndex={data.length - 1}
-            estimatedItemSize={41}
-            keyExtractor={(item) => item.id}
-            maintainVisibleContentPosition
-            alignItemsAtEnd
-            contentContainerStyle={{
-              padding: 12,
-              paddingTop: top,
-            }}
-            recycleItems
-            maintainScrollAtEnd
-            scrollEventThrottle={16}
-            ItemSeparatorComponent={() => <View className="h-3" />}
-            maintainScrollAtEndThreshold={0.1}
-            renderItem={({ item }) => (
-              <View
-                className={cn(
-                  'items-center gap-x-2',
-                  item.isUser ? 'ml-auto flex-row-reverse' : 'mr-auto flex-row'
-                )}>
-                <Avatar alt="user" fallback="user" />
-                <View className="max-w-[85%]">
-                  <Card
-                    className={cn('gap-y-0.5 rounded-3xl border-0 p-2 shadow-none', {
-                      'bg-primary': item.isUser,
-                      'bg-card': !item.isUser,
-                    })}>
-                    <Text
-                      className={cn(
-                        'text-sm',
-                        item.isUser ? 'text-right text-white' : 'text-left'
-                      )}>
-                      {item.text}
-                    </Text>
-                  </Card>
-                  <Text
-                    variant="caption2"
-                    className={cn(
-                      'italic ',
-                      item.isUser ? 'text-right text-muted' : 'text-left text-muted-foreground'
-                    )}>
-                    {formatDistanceToNow(new Date(new Date().getTime() - 1000 * 60 * 60 * 24), {
-                      addSuffix: true,
-                    })}
-                  </Text>
-                </View>
-              </View>
-            )}
-          />
-        </View>
-        <ChatInput
-          onSend={(message: string) => {
-            setChats((prev) => [
-              ...prev,
-              {
-                id: prev.length.toString(),
-                text: message,
-                isUser: true,
-              },
-            ]);
-            ref.current?.scrollToEnd();
-          }}
-        />
-      </KeyboardAvoidingView>
-    </KeyboardGestureArea>
+    <View style={containerStyle}>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          headerTransparent: true,
+        }}
+      />
+      {showScrollButton && (
+        <Animated.View entering={ZoomIn} exiting={ZoomOut} style={scrollButtonStyle}>
+          <TouchableOpacity
+            onPress={handleScrollToEnd}
+            className="size-10 items-center justify-center rounded-2xl bg-secondary shadow">
+            <ChevronDown className="text-secondary-foreground" size={30} />
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+      <ChatArea setShowScrollButton={setShowScrollButton} chat={chat} ref={ref} />
+      <ChatAction onSend={handleSendMessage} />
+      {fakeView}
+    </View>
   );
 };
 

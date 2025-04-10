@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Stack } from 'expo-router';
 import { FormProvider, useForm } from 'react-hook-form';
-import { View } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Pressable, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { z } from 'zod';
 
-import { Button } from '~/components/ui/button';
 import { PasswordInput } from '~/components/ui/form-inputs/password-input';
 import { Text } from '~/components/ui/text';
 
@@ -20,7 +20,6 @@ const schema = z
   });
 
 const UpdatePassword = () => {
-  const { bottom } = useSafeAreaInsets();
   const form = useForm({
     defaultValues: {
       oldPassword: '',
@@ -31,7 +30,17 @@ const UpdatePassword = () => {
   });
   return (
     <SafeAreaView className="flex-1 p-4">
-      <View className="flex-1 gap-y-3">
+      <Stack.Screen
+        options={{
+          title: 'Update Password',
+          headerRight: () => (
+            <Pressable>
+              <Text className="font-medium">save</Text>
+            </Pressable>
+          ),
+        }}
+      />
+      <View className="gap-y-5">
         <FormProvider {...form}>
           <PasswordInput
             control={form.control}
@@ -53,10 +62,6 @@ const UpdatePassword = () => {
           />
         </FormProvider>
       </View>
-
-      <Button variant="tonal">
-        <Text>Update</Text>
-      </Button>
     </SafeAreaView>
   );
 };

@@ -12,7 +12,7 @@ import { Text } from '~/components/ui/text';
 
 const schema = z
   .object({
-    email: z.string().email(),
+    userId: z.string().min(1),
     token: z.string().min(6),
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
@@ -23,10 +23,10 @@ const schema = z
   });
 
 const ResetPassword = () => {
-  const params = useLocalSearchParams<{ email?: string; token?: string }>();
+  const params = useLocalSearchParams<{ userId?: string; token?: string }>();
   const form = useForm({
     defaultValues: {
-      email: params?.email || '',
+      userId: params?.userId || '',
       token: params?.token || '',
       password: '',
       confirmPassword: '',
@@ -36,16 +36,14 @@ const ResetPassword = () => {
   return (
     <KeyboardGestureArea interpolator="linear" style={{ flex: 1 }}>
       <KeyboardAwareScrollView contentContainerClassName="gap-y-10 p-4 pt-20" className="flex-1 ">
-        <View className="gap-y-3">
+        <View className="gap-y-5">
           <FormProvider {...form}>
             <TextInput
               control={form.control}
-              name="email"
-              placeholder="so***@gmail.com"
+              name="userId"
+              placeholder="email or phone number"
               className="rounded-full"
-              inputMode="email"
-              keyboardType="email-address"
-              label="Your email"
+              label="User ID"
             />
             <TextInput
               control={form.control}
@@ -75,7 +73,7 @@ const ResetPassword = () => {
             href={{
               pathname: '/forgot-password',
               params: {
-                email: form.watch('email'),
+                userId: form.watch('userId'),
               },
             }}
             asChild>

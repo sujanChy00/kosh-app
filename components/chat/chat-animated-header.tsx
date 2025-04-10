@@ -84,7 +84,7 @@ export const ChatAnimatedHeader = ({ scrollOffset, paddingTop }: Props) => {
           backgroundColor: isDarkColorScheme ? '#000000cc' : '#f7f7f733',
         },
       ]}
-      intensity={80}
+      intensity={100}
       tint={isDarkColorScheme ? 'dark' : 'light'}>
       <View
         style={{
