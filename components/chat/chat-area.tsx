@@ -64,6 +64,7 @@ export const ChatArea = React.forwardRef<LegendListRef, Props>(
           onScroll={handleScroll}
           data={chat}
           ref={ref}
+          keyboardDismissMode="on-drag"
           style={listStyle}
           initialScrollIndex={chat.length - 1}
           keyExtractor={(item) => item.id}

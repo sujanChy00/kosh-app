@@ -2,13 +2,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Stack } from 'expo-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Pressable, View } from 'react-native';
-import { KeyboardAwareScrollView, KeyboardGestureArea } from 'react-native-keyboard-controller';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  KeyboardAwareScrollView,
+  KeyboardGestureArea,
+  KeyboardToolbar,
+} from 'react-native-keyboard-controller';
 import { z } from 'zod';
 
 import { DateInput } from '~/components/ui/form-inputs/date-input';
 import { TextAreaInput } from '~/components/ui/form-inputs/text-area-input';
 import { TextInput } from '~/components/ui/form-inputs/text-input';
+import { Spacer } from '~/components/ui/spacer';
 import { Text } from '~/components/ui/text';
 
 const schema = z.object({
@@ -23,7 +27,6 @@ const schema = z.object({
 });
 
 const KoshAdd = () => {
-  const { bottom } = useSafeAreaInsets();
   const form = useForm({
     defaultValues: {
       name: '',
@@ -39,7 +42,7 @@ const KoshAdd = () => {
   });
   const onSubmit = form.handleSubmit((data) => console.log(data));
   return (
-    <KeyboardGestureArea interpolator="linear" style={{ flex: 1, paddingBottom: bottom }}>
+    <KeyboardGestureArea interpolator="linear" style={{ flex: 1 }}>
       <Stack.Screen
         options={{
           title: 'Add Kosh',
@@ -51,9 +54,11 @@ const KoshAdd = () => {
         }}
       />
       <KeyboardAwareScrollView
-        className="flex-1"
+        bottomOffset={100}
+        keyboardShouldPersistTaps="handled"
         contentContainerClassName="p-4"
-        keyboardShouldPersistTaps="handled">
+        className="flex-1"
+        keyboardDismissMode="interactive">
         <View className="gap-y-5">
           <FormProvider {...form}>
             <TextInput
@@ -121,7 +126,9 @@ const KoshAdd = () => {
             />
           </FormProvider>
         </View>
+        <Spacer height={40} />
       </KeyboardAwareScrollView>
+      <KeyboardToolbar />
     </KeyboardGestureArea>
   );
 };

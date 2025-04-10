@@ -73,6 +73,7 @@ export const ChatInput = ({ onSend, progress }: Props) => {
             placeholder="Type a message"
             value={message}
             multiline
+            autoFocus
             onChangeText={setMessage}
             className="flex-1 py-3.5 text-foreground placeholder:text-muted-foreground"
           />

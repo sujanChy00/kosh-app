@@ -1,20 +1,18 @@
 import { LegendListRef } from '@legendapp/list';
 import { Stack } from 'expo-router';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { KeyboardAvoidingView, KeyboardGestureArea } from 'react-native-keyboard-controller';
+import { TouchableOpacity, View } from 'react-native';
 import Animated, { ZoomIn, ZoomOut, useAnimatedStyle } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ChatAction } from '~/components/chat/chat-action';
 import { ChatArea } from '~/components/chat/chat-area';
 import { ChevronDown } from '~/components/icons/chevron-down';
-import { isIos } from '~/lib/constants';
+import { useKeyboardFakeView } from '~/hooks/use-keyboard-fake-view';
 
 const ChatDetailScreen = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const { bottom } = useSafeAreaInsets();
   const ref = useRef<LegendListRef>(null);
+  const { fakeView, height } = useKeyboardFakeView();
 
   const data = useMemo(
     () =>
@@ -49,39 +47,31 @@ const ChatDetailScreen = () => {
   const scrollButtonStyle = useAnimatedStyle(() => ({
     position: 'absolute',
     right: 16,
-    bottom: 80,
+    bottom: height.value > 0 ? height.value + 90 : 90,
     zIndex: 20,
   }));
 
   return (
-    <KeyboardGestureArea
-      interpolator="linear"
-      style={[
-        containerStyle,
-        {
-          paddingBottom: bottom,
-        },
-      ]}>
-      <KeyboardAvoidingView behavior={isIos ? 'padding' : 'height'} style={containerStyle}>
-        <Stack.Screen
-          options={{
-            headerShown: false,
-            headerTransparent: true,
-          }}
-        />
-        {showScrollButton && (
-          <Animated.View entering={ZoomIn} exiting={ZoomOut} style={scrollButtonStyle}>
-            <TouchableOpacity
-              onPress={handleScrollToEnd}
-              className="size-12 items-center justify-center rounded-2xl bg-secondary shadow">
-              <ChevronDown className="text-secondary-foreground" size={30} />
-            </TouchableOpacity>
-          </Animated.View>
-        )}
-        <ChatArea setShowScrollButton={setShowScrollButton} chat={chat} ref={ref} />
-        <ChatAction onSend={handleSendMessage} />
-      </KeyboardAvoidingView>
-    </KeyboardGestureArea>
+    <View style={containerStyle}>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          headerTransparent: true,
+        }}
+      />
+      {showScrollButton && (
+        <Animated.View entering={ZoomIn} exiting={ZoomOut} style={scrollButtonStyle}>
+          <TouchableOpacity
+            onPress={handleScrollToEnd}
+            className="size-10 items-center justify-center rounded-2xl bg-secondary shadow">
+            <ChevronDown className="text-secondary-foreground" size={30} />
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+      <ChatArea setShowScrollButton={setShowScrollButton} chat={chat} ref={ref} />
+      <ChatAction onSend={handleSendMessage} />
+      {fakeView}
+    </View>
   );
 };
 

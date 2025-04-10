@@ -3,7 +3,11 @@ import { Stack } from 'expo-router';
 import { useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Pressable, ScrollView, View } from 'react-native';
-import { KeyboardAwareScrollView, KeyboardGestureArea } from 'react-native-keyboard-controller';
+import {
+  KeyboardAwareScrollView,
+  KeyboardGestureArea,
+  KeyboardToolbar,
+} from 'react-native-keyboard-controller';
 import { z } from 'zod';
 
 import { KoshManagerCard } from '~/components/kosh/kosh-manager-card';
@@ -111,6 +115,7 @@ const KoshEdit = () => {
         }}
       />
       <KeyboardAwareScrollView
+        bottomOffset={100}
         keyboardShouldPersistTaps="handled"
         contentContainerClassName="p-4"
         className="flex-1"
@@ -226,8 +231,9 @@ const KoshEdit = () => {
             )}
           </View>
         </FormProvider>
-        <Spacer height={20} />
+        <Spacer height={40} />
       </KeyboardAwareScrollView>
+      <KeyboardToolbar />
     </KeyboardGestureArea>
   );
 };

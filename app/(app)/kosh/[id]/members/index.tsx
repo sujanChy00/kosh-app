@@ -8,6 +8,7 @@ import { PlusIcon } from '~/components/icons/plus-icon';
 import { UsersRound } from '~/components/icons/users-round';
 import { Text } from '~/components/ui/text';
 import { Spacer } from '~/components/ui/spacer';
+import { KoshMemberList } from '~/components/kosh/kosh-member-list';
 
 type Props = {
   phoneNo: string;
@@ -26,8 +27,6 @@ const Page = () => {
     }))
   );
   const data: Props[] = useMemo(() => members, [members]);
-
-  const ItemSeparatorComponent = useCallback(() => <View className="h-3" />, []);
 
   const removeMember = (id: number) => {
     setMembers((prev) => prev.filter((member) => member.id !== id));
@@ -56,16 +55,11 @@ const Page = () => {
           </Button>
         </Link>
       </View> */}
-      <LegendList
-        data={data}
+      <KoshMemberList
         estimatedItemSize={114}
-        recycleItems
-        ItemSeparatorComponent={ItemSeparatorComponent}
-        maintainVisibleContentPosition
-        contentContainerStyle={{ padding: 16 }}
         ListFooterComponent={<Spacer height={60} />}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <KoshMemberCard {...item} removeMember={removeMember} />}
+        members={data}
+        removeMember={removeMember}
       />
     </View>
   );
