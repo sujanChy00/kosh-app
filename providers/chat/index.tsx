@@ -8,6 +8,7 @@ import { ChatContext } from './context';
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const OPTIONS_HEIGHT = 100;
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [recording, setRecording] = useState<Audio.Recording>();
   const [sound, setSound] = useState<string | null>(null);
   const progress = useSharedValue(0);
@@ -29,10 +30,19 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     ref.current?.scrollToEnd();
   }, []);
 
-  const formatedElapsedTime = (): string => {
+  const formatedRecordingTime = (): string => {
     const mins = Math.floor(elapsedTime / 60);
     const secs = elapsedTime % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const formatedElapsedTime = (): string => {
+    const formatTime = (time: number) => {
+      const mins = Math.floor(time / 60);
+      const secs = time % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
+    return `${formatTime(elapsedTime)} / ${formatTime(duration)}`;
   };
 
   const handleSendMessage = useCallback((message: string) => {
@@ -68,6 +78,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         elapsedTime,
         setElapsedTime,
         formatedElapsedTime,
+        duration,
+        setDuration,
+        formatedRecordingTime,
       }}>
       {children}
     </ChatContext.Provider>

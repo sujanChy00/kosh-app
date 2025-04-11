@@ -1,3 +1,4 @@
+import * as DocumentPicker from 'expo-document-picker';
 import { View } from 'react-native';
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
@@ -19,6 +20,13 @@ export const ChatOptions = () => {
   const { progress, OPTIONS_HEIGHT } = useChat();
   const { pickImage } = useImagePicker();
   const { takePhoto } = useCamera();
+  const pickDocument = async () => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: ['application/pdf', 'video/*', 'image/*'],
+      multiple: true,
+    });
+    console.log(result);
+  };
 
   const optionsStyle = useAnimatedStyle(() => {
     const height = interpolate(progress!.value, [0, 1], [0, OPTIONS_HEIGHT]);
@@ -61,7 +69,7 @@ export const ChatOptions = () => {
           </Text>
         </View>
         <View className="items-center gap-y-1">
-          <Button size="icon" variant="muted">
+          <Button size="icon" variant="muted" onPress={pickDocument}>
             <FolderOpen className="text-muted-foreground dark:text-muted" />
           </Button>
           <Text className="text-muted-foreground" variant="caption1">

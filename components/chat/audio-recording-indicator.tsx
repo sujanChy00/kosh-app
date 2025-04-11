@@ -15,7 +15,7 @@ import { useChat } from '~/providers/chat/hook';
 
 export const AudioRecordingIndicator = ({ className }: { className?: string }) => {
   const pulseAnim = useSharedValue(1);
-  const { formatedElapsedTime } = useChat();
+  const { formatedRecordingTime } = useChat();
 
   useEffect(() => {
     pulseAnim.value = withRepeat(
@@ -33,7 +33,7 @@ export const AudioRecordingIndicator = ({ className }: { className?: string }) =
   return (
     <View
       className={cn(
-        'h-full flex-1 flex-row items-center justify-between overflow-x-hidden rounded-full bg-blue-500 py-3.5',
+        'h-full flex-1 flex-row items-center justify-between overflow-x-hidden rounded-full bg-blue-500 py-3.5 pr-2',
         className
       )}>
       <View className="flex-1 flex-row items-center gap-x-1">
@@ -43,7 +43,7 @@ export const AudioRecordingIndicator = ({ className }: { className?: string }) =
         />
         <Text className="flex-1 text-sm text-white">recording...</Text>
       </View>
-      <Text className="text-sm text-white">{formatedElapsedTime()}</Text>
+      <Text className="text-sm text-white">{formatedRecordingTime()}</Text>
     </View>
   );
 };

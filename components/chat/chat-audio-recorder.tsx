@@ -1,4 +1,4 @@
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { useEffect, useRef } from 'react';
 import { Pressable } from 'react-native';
 import Animated, { LayoutAnimationConfig, ZoomIn } from 'react-native-reanimated';
@@ -8,7 +8,7 @@ import { PauseIcon } from '~/components/icons/pause-icon';
 import { useChat } from '~/providers/chat/hook';
 
 export const ChatAudioRecorder = () => {
-  const { recording, setRecording, setSound, setElapsedTime, elapsedTime } = useChat();
+  const { recording, setRecording, setSound, setElapsedTime } = useChat();
   const [permissionResponse, requestPermission] = Audio.usePermissions();
   const timerRef = useRef<NodeJS.Timeout>();
 
@@ -33,16 +33,29 @@ export const ChatAudioRecorder = () => {
   async function startRecording() {
     try {
       if (permissionResponse?.status !== Audio.PermissionStatus.GRANTED) {
-        await requestPermission();
+        const permission = await requestPermission();
+        if (permission.status !== Audio.PermissionStatus.GRANTED) {
+          console.error('Permission not granted');
+          return;
+        }
       }
+
+      console.log('Setting up audio mode for recording...');
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
+        staysActiveInBackground: true,
+        shouldDuckAndroid: true,
+        playThroughEarpieceAndroid: false,
+        interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+        interruptionModeIOS: InterruptionModeIOS.DoNotMix,
       });
 
+      console.log('Creating recording...');
       const { recording } = await Audio.Recording.createAsync(
         Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
+      console.log('Recording started');
       setRecording(recording);
     } catch (err) {
       console.error('Failed to start recording', err);
@@ -50,15 +63,31 @@ export const ChatAudioRecorder = () => {
   }
 
   async function stopRecording() {
-    if (recording) {
-      setRecording(undefined);
+    if (!recording) return;
+
+    try {
+      console.log('Stopping recording...');
       await recording.stopAndUnloadAsync();
+
+      console.log('Setting up audio mode for playback...');
+      // Configure audio mode for playback
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
+        playsInSilentModeIOS: true,
+        staysActiveInBackground: true,
+        interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+        interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+        shouldDuckAndroid: true,
+        playThroughEarpieceAndroid: false,
       });
 
       const uri = recording.getURI();
+      console.log('Recording saved to:', uri);
+
+      setRecording(undefined);
       setSound(uri);
+    } catch (error) {
+      console.error('Failed to stop recording:', error);
     }
   }
 

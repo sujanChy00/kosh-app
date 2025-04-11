@@ -28,6 +28,9 @@ export type ChatContextTyp = {
   elapsedTime: number;
   setElapsedTime: React.Dispatch<React.SetStateAction<number>>;
   formatedElapsedTime: () => string;
+  formatedRecordingTime: () => string;
+  duration: number;
+  setDuration: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export const ChatContext = createContext<ChatContextTyp>({
@@ -48,4 +51,7 @@ export const ChatContext = createContext<ChatContextTyp>({
   elapsedTime: 0,
   setElapsedTime: () => {},
   formatedElapsedTime: () => '',
+  duration: 0,
+  setDuration: () => {},
+  formatedRecordingTime: () => '',
 });
