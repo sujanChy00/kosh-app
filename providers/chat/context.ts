@@ -25,6 +25,9 @@ export type ChatContextTyp = {
   setRecording: React.Dispatch<React.SetStateAction<Audio.Recording | undefined>>;
   sound: string | null;
   setSound: React.Dispatch<React.SetStateAction<string | null>>;
+  elapsedTime: number;
+  setElapsedTime: React.Dispatch<React.SetStateAction<number>>;
+  formatedElapsedTime: () => string;
 };
 
 export const ChatContext = createContext<ChatContextTyp>({
@@ -42,4 +45,7 @@ export const ChatContext = createContext<ChatContextTyp>({
   setRecording: () => {},
   sound: null,
   setSound: () => {},
+  elapsedTime: 0,
+  setElapsedTime: () => {},
+  formatedElapsedTime: () => '',
 });

@@ -7,6 +7,7 @@ import { ChatContext } from './context';
 
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const OPTIONS_HEIGHT = 100;
+  const [elapsedTime, setElapsedTime] = useState(0);
   const [recording, setRecording] = useState<Audio.Recording>();
   const [sound, setSound] = useState<string | null>(null);
   const progress = useSharedValue(0);
@@ -27,6 +28,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const handleScrollToEnd = useCallback(() => {
     ref.current?.scrollToEnd();
   }, []);
+
+  const formatedElapsedTime = (): string => {
+    const mins = Math.floor(elapsedTime / 60);
+    const secs = elapsedTime % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const handleSendMessage = useCallback((message: string) => {
     setChats((prev) => [
@@ -58,6 +65,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         setRecording,
         sound,
         setSound,
+        elapsedTime,
+        setElapsedTime,
+        formatedElapsedTime,
       }}>
       {children}
     </ChatContext.Provider>

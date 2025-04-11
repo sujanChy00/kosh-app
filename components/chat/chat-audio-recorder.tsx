@@ -1,4 +1,5 @@
 import { Audio } from 'expo-av';
+import { useEffect, useRef } from 'react';
 import { Pressable } from 'react-native';
 import Animated, { LayoutAnimationConfig, ZoomIn } from 'react-native-reanimated';
 
@@ -7,8 +8,28 @@ import { PauseIcon } from '~/components/icons/pause-icon';
 import { useChat } from '~/providers/chat/hook';
 
 export const ChatAudioRecorder = () => {
-  const { recording, setRecording, setSound } = useChat();
+  const { recording, setRecording, setSound, setElapsedTime, elapsedTime } = useChat();
   const [permissionResponse, requestPermission] = Audio.usePermissions();
+  const timerRef = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    if (recording) {
+      setElapsedTime(0);
+      timerRef.current = setInterval(() => {
+        setElapsedTime((prev) => prev + 1);
+      }, 1000);
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    }
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [recording, setElapsedTime]);
+
   async function startRecording() {
     try {
       if (permissionResponse?.status !== Audio.PermissionStatus.GRANTED) {
@@ -35,6 +56,7 @@ export const ChatAudioRecorder = () => {
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
       });
+
       const uri = recording.getURI();
       setSound(uri);
     }

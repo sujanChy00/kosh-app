@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import { TextInput, TouchableOpacity, View } from 'react-native';
-import Animated, { interpolate, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  interpolate,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 
 import { AudioRecordingIndicator } from './audio-recording-indicator';
+import { ChatAudioPreview } from './chat-audio-preview';
 import { ChatAudioRecorder } from './chat-audio-recorder';
 
 import { PlusIcon } from '~/components/icons/plus-icon';
@@ -66,10 +72,16 @@ export const ChatInput = () => {
         <View
           className={cn(
             'h-12 flex-1 flex-row items-center rounded-3xl px-3',
-            recording ? 'bg-blue-500' : 'bg-card'
+            recording || sound ? 'bg-blue-500' : 'bg-card'
           )}>
           {recording ? (
-            <AudioRecordingIndicator />
+            <Animated.View entering={FadeIn} style={{ flex: 1 }}>
+              <AudioRecordingIndicator />
+            </Animated.View>
+          ) : sound ? (
+            <Animated.View entering={FadeIn} style={{ flex: 1 }}>
+              <ChatAudioPreview />
+            </Animated.View>
           ) : (
             <TextInput
               placeholder="Type a message"
@@ -79,13 +91,13 @@ export const ChatInput = () => {
               className="native:h-full h-full flex-1 py-3.5 text-foreground placeholder:text-muted-foreground"
             />
           )}
-          {message.length > 0 ? (
+          {message.length > 0 || sound ? (
             <TouchableOpacity
               onPress={() => {
                 handleSendMessage(message);
                 setMessage('');
               }}>
-              <SendHorizonal className="text-foreground" />
+              <SendHorizonal className={sound ? 'text-white' : 'text-foreground'} />
             </TouchableOpacity>
           ) : (
             <ChatAudioRecorder />
