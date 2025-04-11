@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
 
 import { Button } from '../ui/button';
 import { Text } from '../ui/text';
@@ -12,19 +12,16 @@ import { VideoIcon } from '~/components/icons/video-icon';
 import { useCamera } from '~/hooks/use-camera';
 import { useColorScheme } from '~/hooks/use-color-scheme';
 import { useImagePicker } from '~/hooks/use-image-picker';
+import { useChat } from '~/providers/chat/hook';
 
-const OPTIONS_HEIGHT = 100;
-
-export const ChatOptions = ({ progress }: { progress: SharedValue<number> }) => {
+export const ChatOptions = () => {
   const { colors } = useColorScheme();
+  const { progress, OPTIONS_HEIGHT } = useChat();
   const { pickImage } = useImagePicker();
-
   const { takePhoto } = useCamera();
 
   const optionsStyle = useAnimatedStyle(() => {
-    const height = interpolate(progress.value, [0, 1], [0, OPTIONS_HEIGHT]);
-
-    // const opacity = interpolate(progress.value, [0, 0.5, 1], [0, 0, 1]);
+    const height = interpolate(progress!.value, [0, 1], [0, OPTIONS_HEIGHT]);
 
     return {
       height,
@@ -48,40 +45,40 @@ export const ChatOptions = ({ progress }: { progress: SharedValue<number> }) => 
       ]}>
       <View className="flex-row items-center justify-around py-4">
         <View className="items-center gap-y-1">
-          <Button size="icon" variant="secondary" onPress={takePhoto}>
-            <CameraIcon className="text-muted-foreground" />
+          <Button size="icon" variant="muted" onPress={takePhoto}>
+            <CameraIcon className="text-muted-foreground dark:text-muted" />
           </Button>
           <Text className="text-muted-foreground" variant="caption1">
             camera
           </Text>
         </View>
         <View className="items-center gap-y-1">
-          <Button size="icon" variant="secondary" onPress={pickImage}>
-            <GalleryIcon className="text-muted-foreground" />
+          <Button size="icon" variant="muted" onPress={pickImage}>
+            <GalleryIcon className="text-muted-foreground dark:text-muted" />
           </Button>
           <Text className="text-muted-foreground" variant="caption1">
             gallery
           </Text>
         </View>
         <View className="items-center gap-y-1">
-          <Button size="icon" variant="secondary">
-            <FolderOpen className="text-muted-foreground" />
+          <Button size="icon" variant="muted">
+            <FolderOpen className="text-muted-foreground dark:text-muted" />
           </Button>
           <Text className="text-muted-foreground" variant="caption1">
             files
           </Text>
         </View>
         <View className="items-center gap-y-1">
-          <Button size="icon" variant="secondary">
-            <PhoneIcon className="text-muted-foreground" />
+          <Button size="icon" variant="muted">
+            <PhoneIcon className="text-muted-foreground dark:text-muted" />
           </Button>
           <Text className="text-muted-foreground" variant="caption1">
             call
           </Text>
         </View>
         <View className="items-center gap-y-1">
-          <Button size="icon" variant="secondary">
-            <VideoIcon className="text-muted-foreground" />
+          <Button size="icon" variant="muted">
+            <VideoIcon className="text-muted-foreground dark:text-muted" />
           </Button>
           <Text className="text-muted-foreground" variant="caption1">
             video
